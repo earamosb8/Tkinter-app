@@ -18,60 +18,75 @@ ventana.resizable(False, False)
 def createNewWindow():
     ventana.withdraw()
     menuprincipal = tk.Toplevel(ventana)
-    menuprincipal.geometry("600x989")
+    menuprincipal.geometry("550x989")
     menuprincipal.resizable(False, False)
     titleMenu = tk.Label(menuprincipal, text = "Parámetros")
     titleMenu.config(font=("Courier bold", 20))
 
     titleCapas = tk.Label(menuprincipal, text = "Capas")
     titleCapas.config(font=("Courier bold", 20))
+
     opcionBanda = tk.Label(menuprincipal, text="Ancho de banda para la frecuencia")
-    cajaBanda = tkinter.Entry(menuprincipal, font = "Helvetica 10")
+    cajaBanda = tkinter.Entry(menuprincipal, font = "Helvetica 12")
 
     opcionFinicial = tk.Label(menuprincipal, text="Frecuencia inicial")
-    cajaFinicial = tkinter.Entry(menuprincipal, font = "Helvetica 10")
+    cajaFinicial = tkinter.Entry(menuprincipal, font = "Helvetica 12")
     opcionFfinal = tk.Label(menuprincipal, text="Frecuencia final")
-    cajaFfinal = tkinter.Entry(menuprincipal, font = "Helvetica 10")
+    cajaFfinal = tkinter.Entry(menuprincipal, font = "Helvetica 12")
     opcionNpFrecuencia = tk.Label(menuprincipal, text="Número de particiones de frecuencia")
-    cajaNpFrecuencia = tkinter.Entry(menuprincipal, font = "Helvetica 10")
+    cajaNpFrecuencia = tkinter.Entry(menuprincipal, font = "Helvetica 12")
     opcionNtPeriodos = tk.Label(menuprincipal, text="Número total de periodos")
-    cajaNtPeriodos = tkinter.Entry(menuprincipal, font = "Helvetica 10")
+    cajaNtPeriodos = tkinter.Entry(menuprincipal, font = "Helvetica 12")
 
     opcionNCapas = tk.Label(menuprincipal, text="Número de capas de la estructura")
-    cajaNCapas = tkinter.Entry(menuprincipal, font = "Helvetica 10")
-    buttonCrearCapa = tkinter.Button(menuprincipal, text = "Crear",cursor="hand2")
+    cajaNCapas = tkinter.Entry(menuprincipal, font = "Helvetica 12")
+    buttonCrearCapa = tkinter.Button(menuprincipal, text = "Crear",cursor="hand2",command = lambda: crearCapas(menuprincipal,cajaNCapas))
+    
 
     #mostrar elementos
     titleMenu.pack(pady=30)
     
-    opcionBanda.place(x=60, y=100)
-    cajaBanda.place(x=280, y=100)
+    opcionBanda.place(x=75, y=100)
+    cajaBanda.place(x=285, y=100)
 
-    opcionFinicial.place(x=60, y=140)
-    cajaFinicial.place(x=280, y=140)
+    opcionFinicial.place(x=75, y=140)
+    cajaFinicial.place(x=285, y=140)
 
-    opcionFfinal.place(x=60, y=180)
-    cajaFfinal.place(x=280, y=180)
+    opcionFfinal.place(x=75, y=180)
+    cajaFfinal.place(x=285, y=180)
 
-    opcionNpFrecuencia.place(x=60, y=220)
-    cajaNpFrecuencia.place(x=280, y=220)
+    opcionNpFrecuencia.place(x=75, y=220)
+    cajaNpFrecuencia.place(x=285, y=220)
 
-    opcionNtPeriodos.place(x=60, y=260)
-    cajaNtPeriodos.place(x=280, y=260)
+    opcionNtPeriodos.place(x=75, y=260)
+    cajaNtPeriodos.place(x=285, y=260)
 
-    titleCapas.place(x=260, y=320)
+    titleCapas.place(relx=0.5, rely=0.335, anchor=CENTER)
 
-    opcionNCapas.place(x=60, y=380)
-    cajaNCapas.place(x=280, y=380)
-    buttonCrearCapa.place(x=460, y=380)
+    opcionNCapas.place(x=75, y=380)
+    cajaNCapas.place(x=285, y=380)
+    buttonCrearCapa.place(x=480, y=380)
+
+    
+    
     
     menuprincipal.protocol('WM_DELETE_WINDOW', closeProgram)
 
 
 # cerrar el programa
-
 def closeProgram():
     ventana.destroy()
+
+# crear capas
+def crearCapas(vista,numerodecapas):
+    numero = int(numerodecapas.get())
+    ejey = 0
+    for i in range(1,numero + 1):
+        capaNumero = tk.Label(vista, text="Capa " + str(i),font = "Helvetica 11 bold")
+        capaPanel = LabelFrame(vista,height=180,width=400)
+        capaNumero.place(x=75, y=430 + ejey)
+        capaPanel.place(x=75, y=450 + ejey)
+        ejey = ejey + 200
 
 
 
