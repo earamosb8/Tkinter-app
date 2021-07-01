@@ -15,12 +15,19 @@ ventana.resizable(False, False)
 
 capaNumero = ""
 capaPanel = ""
+entrys = []
+parametros = []
+cajaFinicial = ""
+cajaFfinal=""
+cajaNpFrecuencia=""
+cajaNtPeriodos=""
+
 
 # Creacion de ventana principal
 def createNewWindow():
     ventana.withdraw()
     menuprincipal = tk.Toplevel(ventana)
-    menuprincipal.geometry("550x989")
+    menuprincipal.geometry("550x860")
     menuprincipal.resizable(False, False)
     titleMenu = tk.Label(menuprincipal, text = "Parámetros")
     titleMenu.config(font=("Courier bold", 20))
@@ -30,18 +37,28 @@ def createNewWindow():
 
     opcionBanda = tk.Label(menuprincipal, text="Ancho de banda para la frecuencia")
     cajaBanda = tkinter.Entry(menuprincipal, font = "Helvetica 12")
+    entrys.append(cajaBanda)
 
     opcionFinicial = tk.Label(menuprincipal, text="Frecuencia inicial")
+    #campo
     cajaFinicial = tkinter.Entry(menuprincipal, font = "Helvetica 12")
+    entrys.append(cajaFinicial)
     opcionFfinal = tk.Label(menuprincipal, text="Frecuencia final")
+    #campo
     cajaFfinal = tkinter.Entry(menuprincipal, font = "Helvetica 12")
+    entrys.append(cajaFfinal)
     opcionNpFrecuencia = tk.Label(menuprincipal, text="Número de particiones de frecuencia")
+    #campo
     cajaNpFrecuencia = tkinter.Entry(menuprincipal, font = "Helvetica 12")
+    entrys.append(cajaNpFrecuencia)
     opcionNtPeriodos = tk.Label(menuprincipal, text="Número total de periodos")
+    #campo
     cajaNtPeriodos = tkinter.Entry(menuprincipal, font = "Helvetica 12")
-
+    entrys.append(cajaNtPeriodos)
     opcionNCapas = tk.Label(menuprincipal, text="Número de capas de la estructura")
+    #campo
     cajaNCapas = tkinter.Entry(menuprincipal, font = "Helvetica 12")
+    entrys.append(cajaNCapas)
     capapadre = LabelFrame(menuprincipal,height=180,width=400)
     buttonCrearCapa = tkinter.Button(menuprincipal, text = "Crear",cursor="hand2",command = lambda: crearCapas(menuprincipal,cajaNCapas, capapadre))
     
@@ -64,16 +81,24 @@ def createNewWindow():
     opcionNtPeriodos.place(x=75, y=260)
     cajaNtPeriodos.place(x=285, y=260)
 
-    titleCapas.place(relx=0.5, rely=0.335, anchor=CENTER)
+    titleCapas.place(relx=0.5, rely=0.38, anchor=CENTER)
 
     opcionNCapas.place(x=75, y=380)
     cajaNCapas.place(x=285, y=380)
     buttonCrearCapa.place(x=480, y=380)
-
-    
-    
-    
     menuprincipal.protocol('WM_DELETE_WINDOW', closeProgram)
+
+def guardar():
+    for i in entrys:
+        parametros.append(i.get())
+    print(parametros)
+    #parametros.append(str())
+    #parametros.append(str(cajaFfinal.get()))
+    #parametros.append(str(cajaNpFrecuencia.get()))
+    #parametros.append(str(cajaNtPeriodos.get()))
+          
+
+
 
 
 # cerrar el programa
@@ -81,6 +106,7 @@ def closeProgram():
     ventana.destroy()
 
 #validar combobox
+
 
 
     
@@ -118,14 +144,15 @@ def crearCapas(vista,numerodecapas,capapadre):
             x = clicked[i-1].get()
             if x == "Exponencial: Aexp(Bx)+C":
                 parametro3[i-1].place(x=280, y=120)
-            #elif x == "Lineal Ax+B":
+            elif x == "Lineal Ax+B":
+                parametro3[i-1].place_forget()
             
 
     
         for hijo in myframe.winfo_children():
             hijo.destroy()
         for i in range(1,numero + 1):
-            capaPanel = LabelFrame(myframe,height=300,width=400)
+            capaPanel = LabelFrame(myframe,height=250,width=400)
 
             labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa")
             anchoCapa = tkinter.Entry(capaPanel, font = "Helvetica 12")
@@ -157,7 +184,7 @@ def crearCapas(vista,numerodecapas,capapadre):
             particiones.place(x=190, y=150)
             capaPanel.pack(pady=5)
             
-        buttonEnviarDatos = tkinter.Button(myframe, text = "Enviar",cursor="hand2")
+        buttonEnviarDatos = tkinter.Button(myframe, text = "Enviar",cursor="hand2", command=guardar)
         buttonEnviarDatos.pack()
         
 
