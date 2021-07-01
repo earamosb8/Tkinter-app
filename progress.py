@@ -80,56 +80,88 @@ def createNewWindow():
 def closeProgram():
     ventana.destroy()
 
+#validar combobox
+
+
+    
+
 # crear capas
     
 
 def crearCapas(vista,numerodecapas,capapadre):
     numero = int(numerodecapas.get())
-    capapadre = LabelFrame(vista)
-    capapadre.place(x=75, y=430)
-    mycanvas = Canvas(capapadre,height=400,width=400)
-    mycanvas.pack(side=LEFT, fill="both", expand="yes")
-    yscrollbar = tk.Scrollbar(capapadre, orient="vertical", command=mycanvas.yview)
-    yscrollbar.pack(side=RIGHT, fill="y")
-    mycanvas.configure(yscrollcommand=yscrollbar.set,height=400,width=400)
-    mycanvas.bind('<Configure>', lambda e: mycanvas.configure(scrollregion = mycanvas.bbox('all')))
-    myframe = Frame(mycanvas)
-    mycanvas.create_window((0,0), window=myframe, anchor="nw")
-    capapadre.place(x=75, y=430)
-    
-    for hijo in myframe.winfo_children():
-        hijo.destroy()
-    for i in range(1,numero + 1):
-        capaPanel = LabelFrame(myframe,height=300,width=400)
-        labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa")
-        anchoCapa = tkinter.Entry(capaPanel, font = "Helvetica 12")
-        tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil")
-        dropdowntipo = Combobox(capaPanel, values=["Lineal Ax+B", "Exponencial: Aexp(Bx)+C"],state='readonly',width=27)
-        dropdowntipo.current(0)
-        labelparametros = tk.Label(capaPanel, text="Parametros del tipo de perfil:")
-        parametro1 = tkinter.Entry(capaPanel, font = "Helvetica 12",width=10)
-        parametro2 = tkinter.Entry(capaPanel, font = "Helvetica 12",width=10)
-        parametro3 = tkinter.Entry(capaPanel, font = "Helvetica 12",width=10)
-        labelparticiones = tk.Label(capaPanel, text="Número de particiones")
-        particiones = tkinter.Entry(capaPanel, font = "Helvetica 12")
-        capaNumero = tk.Label(capaPanel, text="Capa " + str(i),font = "Helvetica 11 bold",width=43)
+    if numero > 0:
+        capapadre = LabelFrame(vista)
+        capapadre.place(x=75, y=430)
+        mycanvas = Canvas(capapadre,height=400,width=400)
+        mycanvas.pack(side=LEFT, fill="both", expand="yes")
+        yscrollbar = tk.Scrollbar(capapadre, orient="vertical", command=mycanvas.yview)
+        yscrollbar.pack(side=RIGHT, fill="y")
+        mycanvas.configure(yscrollcommand=yscrollbar.set,height=400,width=400)
+        mycanvas.bind('<Configure>', lambda e: mycanvas.configure(scrollregion = mycanvas.bbox('all')))
+        myframe = Frame(mycanvas)
+        mycanvas.create_window((0,0), window=myframe, anchor="nw")
+        capapadre.place(x=75, y=430)
 
-        capaNumero.place(x=0, y=2)
-        labelAnchoCapa.place(x=45, y=30)
-        anchoCapa.place(x=190, y=30)
-        tipodeperfil.place(x=45, y=60)
-        dropdowntipo.place(x=190,y=60)
-        labelparametros.place(x=45, y=90)
-        parametro1.place(x=45, y=120)
-        parametro2.place(x=162, y=120)
-        parametro3.place(x=280, y=120)
-        labelparticiones.place(x=45, y=150)
-        particiones.place(x=190, y=150)
-        capaPanel.pack()
-    #buttonEnviarDatos = tkinter.Button(capapadre, text = "Enviar",cursor="hand2")
-    #buttonEnviarDatos.pack()
-    
+        options = [
+            "Lineal Ax+B",
+            "Lineal Ax+B", 
+            "Exponencial: Aexp(Bx)+C",
+        ]
+        clicked = []
+        parametro3 = []
+        dropdowntipo=[]
+        indice = []
+        def validar(event,i):
+            print(i)
+            print(event)
+            x = clicked[i-1].get()
+            if x == "Exponencial: Aexp(Bx)+C":
+                parametro3[i-1].place(x=280, y=120)
+            #elif x == "Lineal Ax+B":
+            
 
+    
+        for hijo in myframe.winfo_children():
+            hijo.destroy()
+        for i in range(1,numero + 1):
+            capaPanel = LabelFrame(myframe,height=300,width=400)
+
+            labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa")
+            anchoCapa = tkinter.Entry(capaPanel, font = "Helvetica 12")
+            tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil")
+            clicked.append(StringVar())
+            indice.append(i-1)
+            parametro3.append(tkinter.Entry(capaPanel, font = "Helvetica 12",width=10))
+            d = OptionMenu(capaPanel, clicked[i-1], *options, command=lambda event,i=i:validar(event, i))
+            #d.widgetName= str(indice[i-1])
+            dropdowntipo.append(d)
+            dropdowntipo[i-1].widgetName= str(indice[i-1])
+            
+            labelparametros = tk.Label(capaPanel, text="Parametros del tipo de perfil:")
+            parametro1 = tkinter.Entry(capaPanel, font = "Helvetica 12",width=10)
+            parametro2 = tkinter.Entry(capaPanel, font = "Helvetica 12",width=10)
+            labelparticiones = tk.Label(capaPanel, text="Número de particiones")
+            particiones = tkinter.Entry(capaPanel, font = "Helvetica 12")
+            capaNumero = tk.Label(capaPanel, text="Capa " + str(i),font = "Helvetica 11 bold",width=43)
+
+            capaNumero.place(x=0, y=2)
+            labelAnchoCapa.place(x=45, y=30)
+            anchoCapa.place(x=190, y=30)
+            tipodeperfil.place(x=45, y=60)
+            dropdowntipo[i-1].place(x=190,y=60)
+            labelparametros.place(x=45, y=90)
+            parametro1.place(x=45, y=120)
+            parametro2.place(x=162, y=120)
+            labelparticiones.place(x=45, y=150)
+            particiones.place(x=190, y=150)
+            capaPanel.pack(pady=5)
+            
+        buttonEnviarDatos = tkinter.Button(myframe, text = "Enviar",cursor="hand2")
+        buttonEnviarDatos.pack()
+        
+
+    
 
 
 s = Style()
