@@ -7,10 +7,10 @@ import tkinter as tk
 
 # creacion de la ventana
 ventana =  Tk();
-ventana.title("SISTEMA FOTONICO 1D")
+ventana.title("Sistema fotónico 1D")
 ventana.iconbitmap("isotipo.ico")
 ventana.configure(bg='white')
-ventana.geometry("800x500")
+ventana.geometry("500x450")
 ventana.resizable(False, False)
 
 capaNumero = ""
@@ -30,68 +30,73 @@ def createNewWindow():
     ventana.withdraw()
     menuprincipal = tk.Toplevel(ventana)
     menuprincipal.geometry("550x860")
+    #menuprincipal.configure(bg='white')
     menuprincipal.resizable(False, False)
-    titleMenu = tk.Label(menuprincipal, text = "Parámetros")
-    titleMenu.config(font=("Courier bold", 20))
+    titleMenu = tk.Label(menuprincipal, text = "Parámetros", font="Roboto 18 bold", foreground="white", background="#08469B")
+    #titleMenu.config(font=("font="Roboto bold"", 18))
 
-    titleCapas = tk.Label(menuprincipal, text = "Capas")
-    titleCapas.config(font=("Courier bold", 20))
+    subtitlegenerales= tk.Label(menuprincipal, text="Generales", font="Roboto 12 bold", foreground="#08469B", background="white")
 
-    opcionBanda = tk.Label(menuprincipal, text="Ancho de banda para la frecuencia")
+    titleCapas = tk.Label(menuprincipal, text = "Capas", font="Roboto 18 bold", foreground="#08469B", background="white")
+    #titleCapas.config(font=("Courier bold", 20))
+
+    opcionBanda = tk.Label(menuprincipal, text="Ancho de banda para la frecuencia:", font="Roboto 12", foreground="#08469B", background="white")
 
     #campo float
     cajaBanda = tkinter.Entry(menuprincipal, font="Roboto 12")
     entrys.append(cajaBanda)
 
-    opcionFinicial = tk.Label(menuprincipal, text="Frecuencia inicial")
+    opcionFinicial = tk.Label(menuprincipal, text="Frecuencia inicial:", font="Roboto 12", foreground="#08469B", background="white")
 
     #campo float
     cajaFinicial = tkinter.Entry(menuprincipal, font="Roboto 12")
     entrys.append(cajaFinicial)
-    opcionFfinal = tk.Label(menuprincipal, text="Frecuencia final")
+    opcionFfinal = tk.Label(menuprincipal, text="Frecuencia final:", font="Roboto 12", foreground="#08469B", background="white")
 
     #campo float
     cajaFfinal = tkinter.Entry(menuprincipal, font="Roboto 12")
     entrys.append(cajaFfinal)
-    opcionNpFrecuencia = tk.Label(menuprincipal, text="Número de particiones de frecuencia")
+    opcionNpFrecuencia = tk.Label(menuprincipal, text="Número de particiones de frecuencia:", font="Roboto 12", foreground="#08469B", background="white")
 
     #campo entero
     cajaNpFrecuencia = tkinter.Entry(menuprincipal, font="Roboto 12")
     entrys.append(cajaNpFrecuencia)
-    opcionNtPeriodos = tk.Label(menuprincipal, text="Número total de periodos")
+    opcionNtPeriodos = tk.Label(menuprincipal, text="Número total de periodos:", font="Roboto 12", foreground="#08469B", background="white")
 
     #campo entero
     cajaNtPeriodos = tkinter.Entry(menuprincipal, font="Roboto 12")
     entrys.append(cajaNtPeriodos)
-    opcionNCapas = tk.Label(menuprincipal, text="Número de capas de la estructura")
+    opcionNCapas = tk.Label(menuprincipal, text="Número de capas de la estructura:", font="Roboto 12", foreground="#08469B", background="white")
     #campo
     cajaNCapas = tkinter.Entry(menuprincipal, font="Roboto 12",validate="key")
     capapadre = LabelFrame(menuprincipal,height=180,width=400)
-    buttonCrearCapa = tkinter.Button(menuprincipal, text = "Crear",cursor="hand2",command = lambda: crearCapas(menuprincipal,cajaNCapas, capapadre))
+    buttonCrearCapa = tkinter.Button(menuprincipal, text = "Crear", font="Roboto 10", foreground="white", background="#B7C800", cursor="hand2",command = lambda: crearCapas(menuprincipal,cajaNCapas, capapadre))
 
     #mostrar elementos
-    titleMenu.pack(pady=30)
+    titleMenu.pack(pady=0, fill=tk.X)
     
-    opcionBanda.place(x=75, y=100)
-    cajaBanda.place(x=285, y=100)
+    subtitlegenerales.place(x=50, y=60)
 
-    opcionFinicial.place(x=75, y=140)
-    cajaFinicial.place(x=285, y=140)
+    opcionBanda.place(x=50, y=100)
+    cajaBanda.place(x=330, y=100)
 
-    opcionFfinal.place(x=75, y=180)
-    cajaFfinal.place(x=285, y=180)
+    opcionFinicial.place(x=50, y=140)
+    cajaFinicial.place(x=330, y=140)
 
-    opcionNpFrecuencia.place(x=75, y=220)
-    cajaNpFrecuencia.place(x=285, y=220)
+    opcionFfinal.place(x=50, y=180)
+    cajaFfinal.place(x=330, y=180)
 
-    opcionNtPeriodos.place(x=75, y=260)
-    cajaNtPeriodos.place(x=285, y=260)
+    opcionNpFrecuencia.place(x=50, y=220)
+    cajaNpFrecuencia.place(x=330, y=220)
+
+    opcionNtPeriodos.place(x=50, y=260)
+    cajaNtPeriodos.place(x=330, y=260)
 
     titleCapas.place(relx=0.5, rely=0.38, anchor=CENTER)
 
-    opcionNCapas.place(x=75, y=380)
-    cajaNCapas.place(x=285, y=380)
-    buttonCrearCapa.place(x=480, y=380)
+    opcionNCapas.place(x=50, y=380)
+    cajaNCapas.place(x=330, y=380)
+    buttonCrearCapa.place(x=500, y=380)
     menuprincipal.protocol('WM_DELETE_WINDOW', closeProgram)
 
 def guardar():
@@ -102,7 +107,6 @@ def guardar():
     if len(entrys)==6:
         entrys.pop(5)
         
-        par.append(t)
     print(parametros)
     #parametros.append(str())
     #parametros.append(str(cajaFfinal.get()))
@@ -165,22 +169,22 @@ def crearCapas(vista,numerodecapas,capapadre):
             for i in range(1,numero + 1):
                 capaPanel = LabelFrame(myframe,height=250,width=400)
 
-                labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa")
-                anchoCapa = tkinter.Entry(capaPanel, font="Roboto 12")
-                tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil")
+                labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa", font="Roboto 12", foreground="#08469B", background="white" )
+                anchoCapa = tkinter.Entry(capaPanel, font = "Roboto 12")
+                tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil", font="Roboto 12", foreground="#08469B", background="white")
                 clicked.append(StringVar())
                 indice.append(i-1)
-                parametro3.append(tkinter.Entry(capaPanel, font="Roboto 12",width=10))
+                parametro3.append(tkinter.Entry(capaPanel, font = "Roboto 12",width=10))
                 d = OptionMenu(capaPanel, clicked[i-1], *options, command=lambda event,i=i:validar(event, i))
                 #d.widgetName= str(indice[i-1])
                 dropdowntipo.append(d)
                 dropdowntipo[i-1].widgetName= str(indice[i-1])
                 
-                labelparametros = tk.Label(capaPanel, text="Parametros del tipo de perfil:")
-                parametro1 = tkinter.Entry(capaPanel, font="Roboto 12",width=10)
-                parametro2 = tkinter.Entry(capaPanel, font="Roboto 12",width=10)
-                labelparticiones = tk.Label(capaPanel, text="Número de particiones")
-                particiones = tkinter.Entry(capaPanel, font="Roboto 12")
+                labelparametros = tk.Label(capaPanel, text="Parametros del tipo de perfil:", font="Roboto 12", foreground="#08469B", background="white")
+                parametro1 = tkinter.Entry(capaPanel, font = "Roboto 12",width=10)
+                parametro2 = tkinter.Entry(capaPanel, font = "Roboto 12",width=10)
+                labelparticiones = tk.Label(capaPanel, text="Número de particiones", font="Roboto 10", foreground="#08469B", background="white")
+                particiones = tkinter.Entry(capaPanel, font = "Roboto 12")
                 capaNumero = tk.Label(capaPanel, text="Capa " + str(i),font = "Helvetica 11 bold",width=43)
 
                 capaNumero.place(x=0, y=2)
@@ -217,15 +221,17 @@ s.configure("TProgressbar", thickness=10,foreground='red', )
 imagen = PhotoImage(file="logo.png")
 etiqueta = Label(ventana,image=imagen, background="white")
 
-titulo = Label(ventana, text="Bienvenido al programa de cálculo de las",background="white")
-titulo2 = Label(ventana, text="propiedades ópticas de sistema fotónicos 1D",background="white")
+titulo = Label(ventana, text="Bienvenido al programa de cálculo de las", font="Roboto 12 bold", foreground="#08469B", background="white")
+titulo2 = Label(ventana, text="propiedades ópticas de sistemas fotónicos 1D", font="Roboto 12 bold", foreground="#08469B", background="white")
+titulo3 = Label(ventana, text="formados por capas materiales de perfil gradativo", font="Roboto 12 bold", foreground="#08469B", background="white")
 #txt = Label(ventana)
-titulo.config(font=("Roboto bold", 20))
-titulo2.config(font=("Roboto bold", 20))
+#titulo.config(font=("Courier bold", 20))
+#titulo2.config(font=("Courier bold", 20))
 #txt.config(font=("Courier bold", 20))
 etiqueta.pack(pady=30)
 titulo.pack()
 titulo2.pack()
+titulo3.pack()
 def start():
     task = 10
     x = 0
@@ -241,7 +247,9 @@ def start():
 progress_gg = Progressbar(ventana, orient=HORIZONTAL, style="TProgressbar",length=300)
 progress_gg.pack(pady=30)
 #txt.pack()
-buttonFont = font.Font(family='Roboto', size=16, weight='bold')
-button = tkinter.Button(ventana, text = "Entrar", command=start, font=buttonFont,cursor="hand2")
+#buttonFont = font.Font(family='Helvetica', size=16, weight='bold')
+button = tkinter.Button(ventana, text = "Entrar", font="Roboto 12 bold", foreground="white", background="#B7C800",  command=start, cursor="hand2", width="10")
 button.pack()
+piepagina = tk.Label(ventana, background="#F5841F")
+piepagina.pack(side=tk.BOTTOM, fill= tk.X)
 ventana.mainloop()
