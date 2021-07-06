@@ -107,7 +107,12 @@ def guardar():
         parametros.append(i.get())
     if len(entrys)==6:
         entrys.pop(5)
-        
+    #regex-(parametros)
+    # for p in parametros:
+        #if not p in regex:
+            #mensaje
+            #break
+    #     
     print(parametros)
     #parametros.append(str())
     #parametros.append(str(cajaFfinal.get()))
