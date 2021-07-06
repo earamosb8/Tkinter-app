@@ -4,6 +4,7 @@ import time
 import tkinter
 import tkinter.font as font
 import tkinter as tk
+import tkinter.font as font
 
 # creacion de la ventana
 ventana =  Tk();
@@ -30,7 +31,7 @@ def createNewWindow():
     ventana.withdraw()
     menuprincipal = tk.Toplevel(ventana)
     menuprincipal.geometry("550x860")
-    #menuprincipal.configure(bg='white')
+    menuprincipal.configure(bg='white')
     menuprincipal.resizable(False, False)
     titleMenu = tk.Label(menuprincipal, text = "Parámetros", font="Roboto 18 bold", foreground="white", background="#08469B")
     #titleMenu.config(font=("font="Roboto bold"", 18))
