@@ -117,10 +117,10 @@ datoNumeroParticiones.place(x=350, y=590)
 pregunta = tk.Label(myframe, text="¿Está seguro que desea realizar la simulación?", font="Roboto 14 bold", foreground="#08469B", background="white")
 pregunta.place(x=35, y=660)
 
-buttonSi = tk.Button(myframe, text = "Si", font="Roboto 12 bold", foreground="white", background="#B7C800", cursor="hand2")
+buttonSi = tk.Button(myframe, text = "Si", font="Roboto 12 bold", background="#B7C800", cursor="hand2")
 buttonSi.place(x=180, y = 700, width=50, height=30)
 
-buttonNo = tk.Button(myframe, text = "No", font="Roboto 12 bold", foreground="white", background="#B7C800", cursor="hand2")
+buttonNo = tk.Button(myframe, text = "No", font="Roboto 12 bold", background="#B7C800", cursor="hand2")
 buttonNo.place(x=250, y = 700, width=50, height=30)
 
 piepagina = tk.Label(myframe, background="#F5841F")
