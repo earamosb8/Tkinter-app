@@ -44,32 +44,32 @@ def createNewWindow():
     opcionBanda = tk.Label(menuprincipal, text="Ancho de banda para la frecuencia:", font="Roboto 12", foreground="#08469B", background="white")
 
     #campo float
-    cajaBanda = tkinter.Entry(menuprincipal, font = "Roboto 12")
+    cajaBanda = tkinter.Entry(menuprincipal, font="Roboto 12")
     entrys.append(cajaBanda)
 
     opcionFinicial = tk.Label(menuprincipal, text="Frecuencia inicial:", font="Roboto 12", foreground="#08469B", background="white")
 
     #campo float
-    cajaFinicial = tkinter.Entry(menuprincipal, font = "Roboto 12")
+    cajaFinicial = tkinter.Entry(menuprincipal, font="Roboto 12")
     entrys.append(cajaFinicial)
     opcionFfinal = tk.Label(menuprincipal, text="Frecuencia final:", font="Roboto 12", foreground="#08469B", background="white")
 
     #campo float
-    cajaFfinal = tkinter.Entry(menuprincipal, font = "Roboto 12")
+    cajaFfinal = tkinter.Entry(menuprincipal, font="Roboto 12")
     entrys.append(cajaFfinal)
     opcionNpFrecuencia = tk.Label(menuprincipal, text="Número de particiones de frecuencia:", font="Roboto 12", foreground="#08469B", background="white")
 
     #campo entero
-    cajaNpFrecuencia = tkinter.Entry(menuprincipal, font = "Roboto 12")
+    cajaNpFrecuencia = tkinter.Entry(menuprincipal, font="Roboto 12")
     entrys.append(cajaNpFrecuencia)
     opcionNtPeriodos = tk.Label(menuprincipal, text="Número total de periodos:", font="Roboto 12", foreground="#08469B", background="white")
 
     #campo entero
-    cajaNtPeriodos = tkinter.Entry(menuprincipal, font = "Roboto 12")
+    cajaNtPeriodos = tkinter.Entry(menuprincipal, font="Roboto 12")
     entrys.append(cajaNtPeriodos)
     opcionNCapas = tk.Label(menuprincipal, text="Número de capas de la estructura:", font="Roboto 12", foreground="#08469B", background="white")
     #campo
-    cajaNCapas = tkinter.Entry(menuprincipal, font = "Roboto 12",validate="key")
+    cajaNCapas = tkinter.Entry(menuprincipal, font="Roboto 12",validate="key")
     capapadre = LabelFrame(menuprincipal,height=180,width=400)
     buttonCrearCapa = tkinter.Button(menuprincipal, text = "Crear", font="Roboto 10", foreground="white", background="#B7C800", cursor="hand2",command = lambda: crearCapas(menuprincipal,cajaNCapas, capapadre))
 
@@ -105,6 +105,9 @@ def guardar():
     print(len(entrys))
     for i in entrys:
         parametros.append(i.get())
+    if len(entrys)==6:
+        entrys.pop(5)
+        
     print(parametros)
     #parametros.append(str())
     #parametros.append(str(cajaFfinal.get()))
