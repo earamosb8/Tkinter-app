@@ -207,12 +207,17 @@ def crearCapas(vista,numerodecapas,capapadre):
             dropdowntipo=[]
             indice = []
             
-            def validar(event,i):
+            def validar(event,i,optiondropdown):
                 x = clicked[i-1].get()
                 if x == "Exponencial: Aexp(Bx)+C":
+                    optiondropdown.delete(0, "end")
+                    optiondropdown.insert(0,"option2")
                     parametro3[i-1].place(x=280, y=120)
                 elif x == "Lineal Ax+B":
+                    optiondropdown.delete(0, "end")
+                    optiondropdown.insert(0,"option1")
                     parametro3[i-1].place_forget()
+                    parametro3[i-1].delete(0, "end")
                 
 
         
@@ -225,12 +230,15 @@ def crearCapas(vista,numerodecapas,capapadre):
                 tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil", font="Roboto 12", foreground="#08469B", background="white")
                 clicked.append(StringVar())
                 indice.append(i-1)
-                d = OptionMenu(capaPanel, clicked[i-1], *options, command=lambda event,i=i:validar(event, i))
+                optiondropdown = tkinter.Entry(capaPanel, font = "Roboto 12")
+                optiondropdown.insert(0, "option1")
+                entrys.append(optiondropdown)
+                d = OptionMenu(capaPanel, clicked[i-1], *options, command=lambda event,i=i,optiondropdown=optiondropdown:validar(event, i,optiondropdown))
 
                 #d.widgetName= str(indice[i-1])
                 dropdowntipo.append(d)
                 dropdowntipo[i-1].widgetName= str(indice[i-1])
-                entrys.append(500)
+               
                 
                 labelparametros = tk.Label(capaPanel, text="Parametros del tipo de perfil:", font="Roboto 12", foreground="#08469B", background="white")
                 parametro1 = tkinter.Entry(capaPanel, font = "Roboto 12",width=10)
