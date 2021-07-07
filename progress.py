@@ -140,6 +140,10 @@ def guardar():
             elif(type(nietos)==tkinter.OptionMenu):
                 print(True)
     print(parametros)
+    archivo=open("CTETMF.esf","w")
+    for p in parametros:
+        archivo.write(p+"\n")
+    archivo.close()
     #for hijo in elements[0].winfo_children():
         #print(hijo)
         #for nieto in hijo.winfo_children():
