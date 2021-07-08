@@ -5,6 +5,8 @@ import tkinter
 import tkinter.font as font
 import tkinter as tk
 import tkinter.font as font
+import re
+from tkinter import messagebox
 
 # creacion de la ventana
 ventana =  Tk();
@@ -22,6 +24,8 @@ cajaFinicial = ""
 cajaFfinal=""
 cajaNpFrecuencia=""
 cajaNtPeriodos=""
+
+
 
 
 
@@ -49,11 +53,16 @@ def createNewWindow():
 
     opcionFinicial = tk.Label(menuprincipal, text="Frecuencia inicial:", font="Roboto 12", foreground="#08469B", background="white")
 
+  
+
     #campo float
+    
     cajaFinicial = tkinter.Entry(menuprincipal, font="Roboto 12")
+    cajaFinicial.bind("<KeyRelease>", click)	 
     entrys.append(cajaFinicial)
     opcionFfinal = tk.Label(menuprincipal, text="Frecuencia final:", font="Roboto 12", foreground="#08469B", background="white")
 
+    
     #campo float
     cajaFfinal = tkinter.Entry(menuprincipal, font="Roboto 12")
     entrys.append(cajaFfinal)
@@ -100,6 +109,7 @@ def createNewWindow():
     buttonCrearCapa.place(x=500, y=380)
     menuprincipal.protocol('WM_DELETE_WINDOW', closeProgram)
 
+
 def guardar():
     parametros = []
     print(len(entrys))
@@ -107,11 +117,13 @@ def guardar():
         parametros.append(i.get())
     if len(entrys)==6:
         entrys.pop(5)
-    #regex-(parametros)
-    # for p in parametros:
-        #if not p in regex:
-            #mensaje
-            #break
+    
+    print (parametros[1])
+    
+        
+   
+        
+        
     #     
     print(parametros)
     #parametros.append(str())
@@ -129,8 +141,12 @@ def closeProgram():
 
 #validar combobox
 
+# Patrones de validaciones de cajas de texto
+
+#def patrones_validaciones():
 
 
+    
     
 
 # crear capas
@@ -145,7 +161,7 @@ def crearCapas(vista,numerodecapas,capapadre):
             mycanvas.pack(side=LEFT, fill="both", expand="yes")
             yscrollbar = tk.Scrollbar(capapadre, orient="vertical", command=mycanvas.yview)
             yscrollbar.pack(side=RIGHT, fill="y")
-            mycanvas.configure(yscrollcommand=yscrollbar.set,height=400,width=400)
+            mycanvas.configure(yscrollcommand=yscrollbar.set,height=200,width=400)
             mycanvas.bind('<Configure>', lambda e: mycanvas.configure(scrollregion = mycanvas.bbox('all')))
             myframe = Frame(mycanvas)
             mycanvas.create_window((0,0), window=myframe, anchor="nw")
