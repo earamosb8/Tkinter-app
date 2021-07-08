@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter.ttk import *
 import time
 import tkinter
-import tkinter.font as font
+from tkinter import messagebox
 import tkinter as tk
 import tkinter.font as font
 import re
@@ -15,7 +15,7 @@ ventana.iconbitmap("isotipo.ico")
 ventana.configure(bg='white')
 ventana.geometry("500x450")
 ventana.resizable(False, False)
-
+clicked = []
 capaNumero = ""
 capaPanel = ""
 entrys = []
@@ -24,14 +24,33 @@ cajaFinicial = ""
 cajaFfinal=""
 cajaNpFrecuencia=""
 cajaNtPeriodos=""
-
-
+capas = ""
+elements = []
+miscapas = []
+escala = [
+                "GHz",
+                "GHz",
+                "THz",
+                "PHz"
+                
+            ]
 
 
 
 # Creacion de ventana principal
 def createNewWindow():
-    
+    clicked=""
+    clicked=StringVar()
+
+    def validar(event):
+        x = clicked.get()
+        if x == "GHz":
+            entrys[0] = "10e9"
+        elif x == "THz":
+            entrys[0] = "10e12"
+        elif x == "PHz":
+            entrys[0] = "10e15"
+        print(x)
     ventana.withdraw()
     menuprincipal = tk.Toplevel(ventana)
     menuprincipal.geometry("550x860")
@@ -49,7 +68,9 @@ def createNewWindow():
 
     #campo float
     cajaBanda = tkinter.Entry(menuprincipal, font="Roboto 12")
-    entrys.append(cajaBanda)
+    cajaBanda = OptionMenu(menuprincipal, clicked, *escala, command=validar)
+    entrys.append("10e9")
+    
 
     opcionFinicial = tk.Label(menuprincipal, text="Frecuencia inicial:", font="Roboto 12", foreground="#08469B", background="white")
 
@@ -109,27 +130,41 @@ def createNewWindow():
     buttonCrearCapa.place(x=500, y=380)
     menuprincipal.protocol('WM_DELETE_WINDOW', closeProgram)
 
+    
 
 def guardar():
     parametros = []
-    print(len(entrys))
-    for i in entrys:
-        parametros.append(i.get())
-    if len(entrys)==6:
-        entrys.pop(5)
-    
-    print (parametros[1])
-    
-        
-   
-        
-        
-    #     
-    print(parametros)
-    #parametros.append(str())
-    #parametros.append(str(cajaFfinal.get()))
-    #parametros.append(str(cajaNpFrecuencia.get()))
-    #parametros.append(str(cajaNtPeriodos.get()))
+    tipoperfil=""
+    try:
+        for i in range(0,len(entrys)):
+            if(i == 0):
+                parametros.append(entrys[i])
+            else:
+                parametros.append(entrys[i].get())
+    except:
+        parametros.append(str(entrys[i]))
+    for hijos in miscapas:
+        for nietos in hijos.winfo_children():
+            if(type(nietos)==tkinter.Entry):
+                x = str(nietos)
+                x = x.split(".")
+                if x[6] == "!entry2":
+                    tipoperfil =  nietos.get()
+                if x[6] == "!entry5" and tipoperfil=="option1":
+                    continue
+                parametros.append(nietos.get())
+            elif(type(nietos)==tkinter.OptionMenu):
+                print(True)
+    for parametro in parametros:
+        if parametro == "":
+            messagebox.showwarning('Campos Vacios', 'Tenga en cuenta los campos son obligatorios')
+            break
+        else:
+            archivo=open("CTETMF.esf","w")
+            for p in parametros:
+                archivo.write(p+"\n")
+            archivo.close()
+
           
 
 
@@ -155,6 +190,8 @@ def crearCapas(vista,numerodecapas,capapadre):
     if(numerodecapas.get() != ""):
         numero = int(numerodecapas.get())
         if numero > 0:
+            for i in range(0, len(miscapas)):
+                miscapas.pop()
             capapadre = LabelFrame(vista)
             capapadre.place(x=75, y=430)
             mycanvas = Canvas(capapadre,height=400,width=400)
@@ -164,6 +201,7 @@ def crearCapas(vista,numerodecapas,capapadre):
             mycanvas.configure(yscrollcommand=yscrollbar.set,height=200,width=400)
             mycanvas.bind('<Configure>', lambda e: mycanvas.configure(scrollregion = mycanvas.bbox('all')))
             myframe = Frame(mycanvas)
+            elements.append(myframe)
             mycanvas.create_window((0,0), window=myframe, anchor="nw")
             capapadre.place(x=75, y=430)
         
@@ -172,17 +210,22 @@ def crearCapas(vista,numerodecapas,capapadre):
                 "Lineal Ax+B", 
                 "Exponencial: Aexp(Bx)+C",
             ]
-            clicked = []
+            
             parametro3 = []
             dropdowntipo=[]
             indice = []
             
-            def validar(event,i):
+            def validar(event,i,optiondropdown):
                 x = clicked[i-1].get()
                 if x == "Exponencial: Aexp(Bx)+C":
+                    optiondropdown.delete(0, "end")
+                    optiondropdown.insert(0,"option2")
                     parametro3[i-1].place(x=280, y=120)
                 elif x == "Lineal Ax+B":
+                    optiondropdown.delete(0, "end")
+                    optiondropdown.insert(0,"option1")
                     parametro3[i-1].place_forget()
+                    parametro3[i-1].delete(0, "end")
                 
 
         
@@ -190,25 +233,29 @@ def crearCapas(vista,numerodecapas,capapadre):
                 hijo.destroy()
             for i in range(1,numero + 1):
                 capaPanel = LabelFrame(myframe,height=250,width=400)
-
                 labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa", font="Roboto 12", foreground="#08469B", background="white" )
                 anchoCapa = tkinter.Entry(capaPanel, font = "Roboto 12")
                 tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil", font="Roboto 12", foreground="#08469B", background="white")
                 clicked.append(StringVar())
                 indice.append(i-1)
-                parametro3.append(tkinter.Entry(capaPanel, font = "Roboto 12",width=10))
-                d = OptionMenu(capaPanel, clicked[i-1], *options, command=lambda event,i=i:validar(event, i))
+                optiontipoperfil = tkinter.Entry(capaPanel, font = "Roboto 12")
+                optiontipoperfil.insert(0, "option1")
+                entrys.append(optiontipoperfil)
+                d = OptionMenu(capaPanel, clicked[i-1], *options, command=lambda event,i=i,optiondropdown=optiontipoperfil:validar(event, i,optiondropdown))
+
                 #d.widgetName= str(indice[i-1])
                 dropdowntipo.append(d)
                 dropdowntipo[i-1].widgetName= str(indice[i-1])
+               
                 
                 labelparametros = tk.Label(capaPanel, text="Parametros del tipo de perfil:", font="Roboto 12", foreground="#08469B", background="white")
                 parametro1 = tkinter.Entry(capaPanel, font = "Roboto 12",width=10)
                 parametro2 = tkinter.Entry(capaPanel, font = "Roboto 12",width=10)
+                parametro3.append(tkinter.Entry(capaPanel, font = "Roboto 12",width=10))
                 labelparticiones = tk.Label(capaPanel, text="Número de particiones", font="Roboto 10", foreground="#08469B", background="white")
                 particiones = tkinter.Entry(capaPanel, font = "Roboto 12")
                 capaNumero = tk.Label(capaPanel, text="Capa " + str(i),font = "Helvetica 11 bold",width=43)
-
+                miscapas.append(capaPanel)
                 capaNumero.place(x=0, y=2)
                 labelAnchoCapa.place(x=45, y=30)
                 anchoCapa.place(x=190, y=30)
@@ -222,11 +269,10 @@ def crearCapas(vista,numerodecapas,capapadre):
                 capaPanel.pack(pady=5)
             if len(entrys)==6:
                 entrys.pop(5)
-                entrys.append(numerodecapas)
+                entrys.append(i)
                 print(entrys)
             else:
-                entrys.append(numerodecapas)  
-            print(entrys)
+                entrys.append(i)  
             
             buttonEnviarDatos = tkinter.Button(myframe, text = "Enviar",cursor="hand2", command=guardar)
             buttonEnviarDatos.pack()
