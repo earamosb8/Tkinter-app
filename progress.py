@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter.ttk import *
 import time
 import tkinter
-import tkinter.font as font
+from tkinter import messagebox
 import tkinter as tk
 import tkinter.font as font
 
@@ -125,6 +125,7 @@ def createNewWindow():
 
 def guardar():
     parametros = []
+    tipoperfil=""
     try:
         for i in range(0,len(entrys)):
             if(i == 0):
@@ -136,35 +137,25 @@ def guardar():
     for hijos in miscapas:
         for nietos in hijos.winfo_children():
             if(type(nietos)==tkinter.Entry):
+                x = str(nietos)
+                x = x.split(".")
+                if x[6] == "!entry2":
+                    tipoperfil =  nietos.get()
+                if x[6] == "!entry5" and tipoperfil=="option1":
+                    continue
                 parametros.append(nietos.get())
             elif(type(nietos)==tkinter.OptionMenu):
                 print(True)
-    print(parametros)
-    archivo=open("CTETMF.esf","w")
-    for p in parametros:
-        archivo.write(p+"\n")
-    archivo.close()
-    #for hijo in elements[0].winfo_children():
-        #print(hijo)
-        #for nieto in hijo.winfo_children():
-            #print(nieto)
-            #if(type(nieto)==tkinter.Entry):
-                #l = nieto.get()
-                #parametros.append(l)
-    #print(parametros)
-    #if len(entrys)==6:
-        #entrys.pop(5)
-    #regex-(parametros)
-    # for p in parametros:
-        #if not p in regex:
-            #mensaje
-            #break
-    #     
-    
-    #parametros.append(str())
-    #parametros.append(str(cajaFfinal.get()))
-    #parametros.append(str(cajaNpFrecuencia.get()))
-    #parametros.append(str(cajaNtPeriodos.get()))
+    for parametro in parametros:
+        if parametro == "":
+            messagebox.showwarning('Campos Vacios', 'Tenga en cuenta los campos son obligatorios')
+            break
+        else:
+            archivo=open("CTETMF.esf","w")
+            for p in parametros:
+                archivo.write(p+"\n")
+            archivo.close()
+
           
 
 
@@ -234,10 +225,10 @@ def crearCapas(vista,numerodecapas,capapadre):
                 tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil", font="Roboto 12", foreground="#08469B", background="white")
                 clicked.append(StringVar())
                 indice.append(i-1)
-                optiondropdown = tkinter.Entry(capaPanel, font = "Roboto 12")
-                optiondropdown.insert(0, "option1")
-                entrys.append(optiondropdown)
-                d = OptionMenu(capaPanel, clicked[i-1], *options, command=lambda event,i=i,optiondropdown=optiondropdown:validar(event, i,optiondropdown))
+                optiontipoperfil = tkinter.Entry(capaPanel, font = "Roboto 12")
+                optiontipoperfil.insert(0, "option1")
+                entrys.append(optiontipoperfil)
+                d = OptionMenu(capaPanel, clicked[i-1], *options, command=lambda event,i=i,optiondropdown=optiontipoperfil:validar(event, i,optiondropdown))
 
                 #d.widgetName= str(indice[i-1])
                 dropdowntipo.append(d)
