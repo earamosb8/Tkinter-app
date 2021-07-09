@@ -79,7 +79,7 @@ def createNewWindow():
     #campo float
     
     cajaFinicial = tkinter.Entry(menuprincipal, font="Roboto 12")
-    cajaFinicial.bind("<KeyRelease>", click)	 
+    #cajaFinicial.bind("<KeyRelease>", click)	 
     entrys.append(cajaFinicial)
     opcionFfinal = tk.Label(menuprincipal, text="Frecuencia final:", font="Roboto 12", foreground="#08469B", background="white")
 
