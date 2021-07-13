@@ -245,9 +245,9 @@ def crearCapas(vista,numerodecapas,capapadre):
                 hijo.destroy()
             for i in range(1,numero + 1):
                 capaPanel = tk.LabelFrame(myframe,height=250,width=400,bg = "white")
-                labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa", font="Calibri 12", foreground="#08469B", background="white" )
+                labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa:", font="Calibri 12", foreground="#08469B", background="white" )
                 anchoCapa = tkinter.Entry(capaPanel, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
-                tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil", font="Calibri 12", foreground="#08469B", background="white")
+                tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil:", font="Calibri 12", foreground="#08469B", background="white")
                 clicked.append(StringVar())
                 indice.append(i-1)
                 optiontipoperfil = tkinter.Entry(capaPanel, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
@@ -264,20 +264,20 @@ def crearCapas(vista,numerodecapas,capapadre):
                 parametro1 = tkinter.Entry(capaPanel, font = "Calibri 12",width=10,highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
                 parametro2 = tkinter.Entry(capaPanel, font = "Calibri 12",width=10,highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
                 parametro3.append(tkinter.Entry(capaPanel, font = "Calibri 12",width=10,highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2))
-                labelparticiones = tk.Label(capaPanel, text="Número de particiones", font="Calibri 10", foreground="#08469B", background="white")
+                labelparticiones = tk.Label(capaPanel, text="Número de particiones:", font="Calibri 12", foreground="#08469B", background="white")
                 particiones = tkinter.Entry(capaPanel, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
-                capaNumero = tk.Label(capaPanel, text="Capa " + str(i),font = "Helvetica 11 bold",width=43 ,foreground="white", background="#08469B")
+                capaNumero = tk.Label(capaPanel, text="Capa " + str(i),font = "Calibri 12 bold",width=50 ,foreground="white", background="#08469B")
                 miscapas.append(capaPanel)
                 capaNumero.place(x=0, y=2)
                 labelAnchoCapa.place(x=45, y=30)
-                anchoCapa.place(x=190, y=30)
+                anchoCapa.place(x=210, y=30)
                 tipodeperfil.place(x=45, y=60)
-                dropdowntipo[i-1].place(x=190,y=60)
+                dropdowntipo[i-1].place(x=210,y=60)
                 labelparametros.place(x=45, y=90)
                 parametro1.place(x=45, y=120)
                 parametro2.place(x=162, y=120)
                 labelparticiones.place(x=45, y=150)
-                particiones.place(x=190, y=150)
+                particiones.place(x=210, y=150)
                 capaPanel.pack(pady=5)
             if len(entrys)==6:
                 entrys.pop(5)
@@ -286,8 +286,10 @@ def crearCapas(vista,numerodecapas,capapadre):
             else:
                 entrys.append(i)  
             
-            buttonEnviarDatos = tkinter.Button(myframe, text = "Enviar",cursor="hand2",width=6,height=1, font="Calibri 12 bold", foreground="black", background="#B7C800", command=guardar)
+            buttonEnviarDatos = tkinter.Button(myframe, text = "Guardar",cursor="hand2", width=8, height=1, font="Calibri 12 bold", foreground="black", background="#B7C800", command=guardar)
             buttonEnviarDatos.pack()
+
+
         
 
     
@@ -295,7 +297,10 @@ def crearCapas(vista,numerodecapas,capapadre):
 
 s = Style()
 s.theme_use('alt')
-s.configure("TProgressbar", thickness=10,foreground='red', )
+s.configure("TProgressbar", thickness=7, troughcolor='#a2c4c9',
+    background='#b7c800', bordercolor="#a2c4c9")
+    #darkcolor="#a2c4c9",
+    #lightcolor="#a2c4c9" )
 # redimensionar nuestra ventana
 
 imagen = PhotoImage(file="logo.png")
@@ -328,7 +333,7 @@ progress_gg = Progressbar(ventana, orient=HORIZONTAL, style="TProgressbar",lengt
 progress_gg.pack(pady=30)
 #txt.pack()
 #buttonFont = font.Font(family='Helvetica', size=16, weight='bold')
-button = tkinter.Button(ventana, text = "Entrar", font="Calibri 14 bold", foreground="white", background="#B7C800",  command=start, cursor="hand2", width="10")
+button = tkinter.Button(ventana, text = "Entrar", font="Calibri 12 bold", foreground="black", background="#B7C800",  command=start, cursor="hand2", width=8, height=1)
 button.pack()
 piepagina = tk.Label(ventana, background="#F5841F")
 piepagina.pack(side=tk.BOTTOM, fill= tk.X)
