@@ -42,7 +42,7 @@ tituloVentanaSimulada.place(x=0, y=0, width=500, height=50)
 
 nombreArchivo = tk.Label(myframe, text="Nombre del archivo:", font="Roboto 12", foreground="#08469B", background="white")
 nombreArchivo.place(x=70, y=65)
-datoNombreArchivo = tk.Label(myframe, text="xxxxxx", font="Roboto 12", background="white")
+datoNombreArchivo = tk.Entry(myframe, text="xxxxxx", font="Roboto 12", background="white", width=10)
 datoNombreArchivo.place(x=350, y=65)
 
 anchoBanda = tk.Label(myframe, text="Ancho de banda para la frecuencia:", font="Roboto 12", foreground="#08469B", background="white")
