@@ -15,7 +15,12 @@ ventanaes.iconbitmap("isotipo.ico")
 ventanaes.configure(bg='white')
 ventanaes.resizable(False, False)
 # redimensionar nuestra ventana
-ventanaes.geometry("500x600")
+anchoVentana = 500
+altoVentana = 600
+x_ventana = ventanaes.winfo_screenwidth() // 2 - anchoVentana // 2
+y_ventana = ventanaes.winfo_screenheight() // 2 - altoVentana // 2
+posicion = str(anchoVentana) + "x" + str(altoVentana) + "+" + str(x_ventana) + "+" + str(y_ventana)
+ventanaes.geometry(posicion)
 
 #Agregar LabelFrame Padre
 framePadre = LabelFrame(ventanaes)
@@ -124,7 +129,7 @@ buttonNo = tk.Button(myframe, text = "No", font="Calibri 12 bold", background="#
 buttonNo.place(x=250, y = 700, width=50, height=30)
 
 piepagina = tk.Label(myframe, background="#F5841F")
-piepagina.place(x=0, y = 750, width=500, height=30)
+piepagina.place(x=0, y = 740, width=500, height=20)
 
 
 ventanaes.mainloop()

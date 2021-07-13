@@ -10,10 +10,16 @@ from tkinter import messagebox
 
 # creacion de la ventana
 ventana =  Tk();
+anchoVentana = 500
+altoVentana = 450
 ventana.title("Sistema fotónico 1D")
 ventana.iconbitmap("isotipo.ico")
 ventana.configure(bg='white')
-ventana.geometry("500x450")
+
+x_ventana = ventana.winfo_screenwidth() // 2 - anchoVentana // 2
+y_ventana = ventana.winfo_screenheight() // 2 - altoVentana // 2
+posicion = str(anchoVentana) + "x" + str(altoVentana) + "+" + str(x_ventana) + "+" + str(y_ventana)
+ventana.geometry(posicion)
 ventana.resizable(False, False)
 clicked = []
 capaNumero = ""
@@ -52,59 +58,65 @@ def createNewWindow():
             entrys[0] = "10e15"
         print(x)
     ventana.withdraw()
+
     menuprincipal = tk.Toplevel(ventana)
-    menuprincipal.geometry("550x860")
+    anchoVentana = 550
+    altoVentana = 860
+    x_ventana = ventana.winfo_screenwidth() // 2 - anchoVentana // 2
+    y_ventana = ventana.winfo_screenheight() // 2 - altoVentana // 2
+    posicion = str(anchoVentana) + "x" + str(altoVentana) + "+" + str(x_ventana) + "+" + str(y_ventana)
+    menuprincipal.geometry(posicion)
     menuprincipal.configure(bg='white')
     menuprincipal.resizable(False, False)
-    titleMenu = tk.Label(menuprincipal, text = "Parámetros", font="Roboto 18 bold", foreground="white", background="#08469B")
-    #titleMenu.config(font=("font="Roboto bold"", 18))
+    titleMenu = tk.Label(menuprincipal, text = "Parámetros", font="Calibri 18 bold", foreground="white", background="#08469B")
+    #titleMenu.config(font=("font="Calibri bold"", 18))
 
-    subtitlegenerales= tk.Label(menuprincipal, text="Generales", font="Roboto 12 bold", foreground="#08469B", background="white")
+    subtitlegenerales= tk.Label(menuprincipal, text="Generales", font="Calibri 18 bold", foreground="#08469B", background="white")
 
-    titleCapas = tk.Label(menuprincipal, text = "Capas", font="Roboto 18 bold", foreground="#08469B", background="white")
+    titleCapas = tk.Label(menuprincipal, text = "Capas", font="Calibri 18 bold", foreground="#08469B", background="white")
     #titleCapas.config(font=("Courier bold", 20))
 
-    opcionBanda = tk.Label(menuprincipal, text="Ancho de banda para la frecuencia:", font="Roboto 12", foreground="#08469B", background="white")
+    opcionBanda = tk.Label(menuprincipal, text="Ancho de banda para la frecuencia:", font="Calibri 12", foreground="#08469B", background="white")
 
     #campo float
-    cajaBanda = tkinter.Entry(menuprincipal, font="Roboto 12")
+    cajaBanda = tkinter.Entry(menuprincipal, font="Calibri 12")
     cajaBanda = OptionMenu(menuprincipal, clicked, *escala, command=validar)
     entrys.append("10e9")
     
 
-    opcionFinicial = tk.Label(menuprincipal, text="Frecuencia inicial:", font="Roboto 12", foreground="#08469B", background="white")
+    opcionFinicial = tk.Label(menuprincipal, text="Frecuencia inicial:", font="Calibri 12", foreground="#08469B", background="white")
 
-  
 
     #campo float
     
-    cajaFinicial = tkinter.Entry(menuprincipal, font="Roboto 12")
+    cajaFinicial = tkinter.Entry(menuprincipal, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
     #cajaFinicial.bind("<KeyRelease>", click)	 
     entrys.append(cajaFinicial)
-    opcionFfinal = tk.Label(menuprincipal, text="Frecuencia final:", font="Roboto 12", foreground="#08469B", background="white")
+    opcionFfinal = tk.Label(menuprincipal, text="Frecuencia final:", font="Calibri 12", foreground="#08469B", background="white")
 
     
     #campo float
-    cajaFfinal = tkinter.Entry(menuprincipal, font="Roboto 12")
+    cajaFfinal = tkinter.Entry(menuprincipal, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
     entrys.append(cajaFfinal)
-    opcionNpFrecuencia = tk.Label(menuprincipal, text="Número de particiones de frecuencia:", font="Roboto 12", foreground="#08469B", background="white")
+    opcionNpFrecuencia = tk.Label(menuprincipal, text="Número de particiones de frecuencia:", font="Calibri 12", foreground="#08469B", background="white")
 
     #campo entero
-    cajaNpFrecuencia = tkinter.Entry(menuprincipal, font="Roboto 12")
+    cajaNpFrecuencia = tkinter.Entry(menuprincipal, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
     entrys.append(cajaNpFrecuencia)
-    opcionNtPeriodos = tk.Label(menuprincipal, text="Número total de periodos:", font="Roboto 12", foreground="#08469B", background="white")
+    opcionNtPeriodos = tk.Label(menuprincipal, text="Número total de periodos:", font="Calibri 12", foreground="#08469B", background="white")
 
     #campo entero
-    cajaNtPeriodos = tkinter.Entry(menuprincipal, font="Roboto 12")
+    cajaNtPeriodos = tkinter.Entry(menuprincipal, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
     entrys.append(cajaNtPeriodos)
-    opcionNCapas = tk.Label(menuprincipal, text="Número de capas de la estructura:", font="Roboto 12", foreground="#08469B", background="white")
+    opcionNCapas = tk.Label(menuprincipal, text="Número de capas de la estructura:", font="Calibri 12", foreground="#08469B", background="white")
     #campo
-    cajaNCapas = tkinter.Entry(menuprincipal, font="Roboto 12",validate="key")
+    cajaNCapas = tkinter.Entry(menuprincipal, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
     capapadre = LabelFrame(menuprincipal,height=180,width=400)
-    buttonCrearCapa = tkinter.Button(menuprincipal, text = "Crear", font="Roboto 10", foreground="white", background="#B7C800", cursor="hand2",command = lambda: crearCapas(menuprincipal,cajaNCapas, capapadre))
+    buttonCrearCapa = tkinter.Button(menuprincipal, text = "Crear", width=4,height=1, font="Calibri 11 bold", foreground="black", background="#B7C800", cursor="hand2",command = lambda: crearCapas(menuprincipal,cajaNCapas, capapadre))
 
     #mostrar elementos
-    titleMenu.pack(pady=0, fill=tk.X)
+    #titleMenu.pack(pady=0, fill=tk.X)
+    titleMenu.place(x=0, y=0, width=550, height=50)
     
     subtitlegenerales.place(x=50, y=60)
 
@@ -198,7 +210,7 @@ def crearCapas(vista,numerodecapas,capapadre):
             mycanvas.pack(side=LEFT, fill="both", expand="yes")
             yscrollbar = tk.Scrollbar(capapadre, orient="vertical", command=mycanvas.yview)
             yscrollbar.pack(side=RIGHT, fill="y")
-            mycanvas.configure(yscrollcommand=yscrollbar.set,height=200,width=400)
+            mycanvas.configure(yscrollcommand=yscrollbar.set,height=200,width=400,bg="white")
             mycanvas.bind('<Configure>', lambda e: mycanvas.configure(scrollregion = mycanvas.bbox('all')))
             myframe = Frame(mycanvas)
             elements.append(myframe)
@@ -232,13 +244,13 @@ def crearCapas(vista,numerodecapas,capapadre):
             for hijo in myframe.winfo_children():
                 hijo.destroy()
             for i in range(1,numero + 1):
-                capaPanel = LabelFrame(myframe,height=250,width=400)
-                labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa", font="Roboto 12", foreground="#08469B", background="white" )
-                anchoCapa = tkinter.Entry(capaPanel, font = "Roboto 12")
-                tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil", font="Roboto 12", foreground="#08469B", background="white")
+                capaPanel = tk.LabelFrame(myframe,height=250,width=400,bg = "white")
+                labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa", font="Calibri 12", foreground="#08469B", background="white" )
+                anchoCapa = tkinter.Entry(capaPanel, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
+                tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil", font="Calibri 12", foreground="#08469B", background="white")
                 clicked.append(StringVar())
                 indice.append(i-1)
-                optiontipoperfil = tkinter.Entry(capaPanel, font = "Roboto 12")
+                optiontipoperfil = tkinter.Entry(capaPanel, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
                 optiontipoperfil.insert(0, "option1")
                 entrys.append(optiontipoperfil)
                 d = OptionMenu(capaPanel, clicked[i-1], *options, command=lambda event,i=i,optiondropdown=optiontipoperfil:validar(event, i,optiondropdown))
@@ -248,13 +260,13 @@ def crearCapas(vista,numerodecapas,capapadre):
                 dropdowntipo[i-1].widgetName= str(indice[i-1])
                
                 
-                labelparametros = tk.Label(capaPanel, text="Parametros del tipo de perfil:", font="Roboto 12", foreground="#08469B", background="white")
-                parametro1 = tkinter.Entry(capaPanel, font = "Roboto 12",width=10)
-                parametro2 = tkinter.Entry(capaPanel, font = "Roboto 12",width=10)
-                parametro3.append(tkinter.Entry(capaPanel, font = "Roboto 12",width=10))
-                labelparticiones = tk.Label(capaPanel, text="Número de particiones", font="Roboto 10", foreground="#08469B", background="white")
-                particiones = tkinter.Entry(capaPanel, font = "Roboto 12")
-                capaNumero = tk.Label(capaPanel, text="Capa " + str(i),font = "Helvetica 11 bold",width=43)
+                labelparametros = tk.Label(capaPanel, text="Parametros del tipo de perfil:", font="Calibri 12", foreground="#08469B", background="white")
+                parametro1 = tkinter.Entry(capaPanel, font = "Calibri 12",width=10,highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
+                parametro2 = tkinter.Entry(capaPanel, font = "Calibri 12",width=10,highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
+                parametro3.append(tkinter.Entry(capaPanel, font = "Calibri 12",width=10,highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2))
+                labelparticiones = tk.Label(capaPanel, text="Número de particiones", font="Calibri 10", foreground="#08469B", background="white")
+                particiones = tkinter.Entry(capaPanel, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
+                capaNumero = tk.Label(capaPanel, text="Capa " + str(i),font = "Helvetica 11 bold",width=43 ,foreground="white", background="#08469B")
                 miscapas.append(capaPanel)
                 capaNumero.place(x=0, y=2)
                 labelAnchoCapa.place(x=45, y=30)
@@ -274,7 +286,7 @@ def crearCapas(vista,numerodecapas,capapadre):
             else:
                 entrys.append(i)  
             
-            buttonEnviarDatos = tkinter.Button(myframe, text = "Enviar",cursor="hand2", command=guardar)
+            buttonEnviarDatos = tkinter.Button(myframe, text = "Enviar",cursor="hand2",width=6,height=1, font="Calibri 12 bold", foreground="black", background="#B7C800", command=guardar)
             buttonEnviarDatos.pack()
         
 
@@ -289,9 +301,9 @@ s.configure("TProgressbar", thickness=10,foreground='red', )
 imagen = PhotoImage(file="logo.png")
 etiqueta = Label(ventana,image=imagen, background="white")
 
-titulo = Label(ventana, text="Bienvenido al programa de cálculo de las", font="Calibri 12 bold", foreground="#08469B", background="white")
-titulo2 = Label(ventana, text="propiedades ópticas de sistemas fotónicos 1D", font="Calibri 12 bold", foreground="#08469B", background="white")
-titulo3 = Label(ventana, text="formados por capas materiales de perfil gradativo", font="Calibri 12 bold", foreground="#08469B", background="white")
+titulo = Label(ventana, text="Bienvenido al programa de cálculo de las", font="Calibri 16 bold", foreground="#08469B", background="white")
+titulo2 = Label(ventana, text="propiedades ópticas de sistemas fotónicos 1D", font="Calibri 16 bold", foreground="#08469B", background="white")
+titulo3 = Label(ventana, text="formados por capas materiales de perfil gradativo", font="Calibri 16 bold", foreground="#08469B", background="white")
 #txt = Label(ventana)
 #titulo.config(font=("Courier bold", 20))
 #titulo2.config(font=("Courier bold", 20))
@@ -316,7 +328,7 @@ progress_gg = Progressbar(ventana, orient=HORIZONTAL, style="TProgressbar",lengt
 progress_gg.pack(pady=30)
 #txt.pack()
 #buttonFont = font.Font(family='Helvetica', size=16, weight='bold')
-button = tkinter.Button(ventana, text = "Entrar", font="Calibri 12 bold", foreground="white", background="#B7C800",  command=start, cursor="hand2", width="10")
+button = tkinter.Button(ventana, text = "Entrar", font="Calibri 14 bold", foreground="white", background="#B7C800",  command=start, cursor="hand2", width="10")
 button.pack()
 piepagina = tk.Label(ventana, background="#F5841F")
 piepagina.pack(side=tk.BOTTOM, fill= tk.X)
