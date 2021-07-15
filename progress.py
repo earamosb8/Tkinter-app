@@ -142,25 +142,38 @@ def createNewWindow():
     buttonCrearCapa.place(x=500, y=360)
     menuprincipal.protocol('WM_DELETE_WINDOW', closeProgram)
 
-def validarFloat(parametro,pos):
+def validador(parametro,pos,tipo):
     entrys[pos].configure(highlightcolor="#a2c4c9")
     entrys[pos].configure(highlightbackground="#a2c4c9")
     if parametro:
-        z = re.compile(r"^(?:\d+(?:\.\d*)?|\.\d+)$")
-        if z.search(str(parametro)) is None:
+        if tipo == "float":
+            z = re.compile(r"^(?:\d+(?:\.\d*)?|\.\d+)$")
+        if tipo == "int":
+            z = re.compile(r'^[0-9]{1,10}$')
+        if z.search(str(parametro)) is None or int(parametro) <= 0:
             entrys[pos].configure(highlightcolor="red")
             entrys[pos].configure(highlightbackground="red")
-            return False
+            fallo = 0
+            return fallo
 
-def validarInt(parametro,pos):
-    entrys[pos].configure(highlightcolor="#a2c4c9")
-    entrys[pos].configure(highlightbackground="#a2c4c9")
-    if parametro:
+def validadornietos(nieto,valor,tipo):
+    nieto.configure(highlightcolor="#a2c4c9")
+    nieto.configure(highlightbackground="#a2c4c9")
+    if tipo == "float":
+        z = re.compile(r"^(?:\d+(?:\.\d*)?|\.\d+)$")
+    if tipo == "int":
         z = re.compile(r'^[0-9]{1,10}$')
-        if z.search(str(parametro)) is None:
-            entrys[pos].configure(highlightcolor="red")
-            entrys[pos].configure(highlightbackground="red")
-            return False
+    try:
+        if z.search(str(valor)) is None or int(valor) <= 0:
+            nieto.configure(highlightcolor="red")
+            nieto.configure(highlightbackground="red")
+            fallo = 0
+            return fallo
+    except:
+        fallo = 0
+        return fallo
+
+       
             
 
 
@@ -169,6 +182,8 @@ def guardar():
     tipoperfil=""
     camposLlenos = True
     resultado = True
+    mensaje = ""
+    mensaje2 = ""
     try:
         for i in range(0,len(entrys)):
             if(i == 0):
@@ -187,21 +202,66 @@ def guardar():
                 if x[6] == "!entry5" and tipoperfil=="1":
                     continue
                 parametros.append(nietos.get())
-            elif(type(nietos)==tkinter.OptionMenu):
-                print(True)
     for parametro in parametros:
         if parametro == "":
             camposLlenos = False
             messagebox.showwarning('Campos Vacios', 'Tenga en cuenta que todos los campos son obligatorios')
             break
     if camposLlenos == True:
-        for i in range(1,len(parametros)):
+        for i in range(1,5):
             if(i == 1 or i == 2):
-                resultado = validarFloat(parametros[i],i)
+                numero = validador(parametros[i],i,"float")
+                if numero == 0:
+                    if i == 1:
+                        mensaje = "El dato de la Frecuencia Inicial debe ser de tipo decimal positivo \n"
+                    if i == 2:
+                        mensaje = mensaje + "El dato de la Frecuencia Inicial debe ser tipo decimal de tipo decimal positivo \n"
+                    resultado = False
             if(i == 3 or i == 4):
-                resultado = validarInt(parametros[i],i)
+                numero = validador(parametros[i],i,"int")
+                if numero == 0:
+                    if i == 3:
+                        mensaje = mensaje + "El Numero de Particiones de Frecuencia debe ser de tipo entero \n"
+                    if i == 4:
+                        mensaje = mensaje + "El Numero Total de periodos debe ser de tipo entero \n"
+                    resultado = False    
+        for hijos in miscapas:
+            for nietos in hijos.winfo_children():
+                if(type(nietos)==tkinter.Entry):
+                    x = str(nietos)
+                    x = x.split(".")
+                    if x[6] == "!entry":
+                        valor =  nietos.get()
+                        numero = validadornietos(nietos,valor,"int")
+                        if numero == 0:
+                            mensaje2 = "El Ancho de la Capa debe ser de tipo entero\n"
+                            resultado = False
+                    if x[6] == "!entry2":
+                        tipoperfil =  nietos.get()
+                    if x[6] == "!entry3" or x[6] == "!entry4" or x[6] == "!entry5" and tipoperfil=="2":
+                        valor =  nietos.get()
+                        numero = validadornietos(nietos,valor,"float")
+                        if numero == 0:
+                            encontrado = mensaje2.find("Los Parametros A,B y C del Tipo de perfil deben ser decimales\n")
+                            if encontrado > -1:
+                                mensaje2.replace("Los Parametros A,B y C del Tipo de perfil deben ser decimales\n", "Los Parametros A,B y C del Tipo de perfil deben ser decimales\n")
+                            else:
+                                mensaje2 += str("Los Parametros A,B y C del Tipo de perfil deben ser decimales\n")
+                            resultado = False
+                        #tipoperfil =  nietos.get()
+                        #print(tipoperfil)
+                    if x[6] == "!entry5" and tipoperfil=="1":
+                        continue
+                    if x[6] == "!entry6":
+                        valor =  nietos.get()
+                        numero = validadornietos(nietos,valor,"int")
+                        if numero == 0:
+                            mensaje2 +=str("El Numero de Particiones debe ser de tipo entero positivo")
+                            resultado = False
+
         if resultado is False:
-            messagebox.showwarning('Advertencia!!!', "Tengan en cuenta que la es un numero decimal")
+            mensaje = mensaje + mensaje2
+            messagebox.showwarning('Advertencia!!!',mensaje)
             resultado = True
                 
         #archivo=open("CTETMF.esf","w")
@@ -231,9 +291,18 @@ def closeProgram():
 # crear capas
 
 def crearCapas(vista,numerodecapas,capapadre):
+    esnumero = True
+    numerodecapas.configure(highlightcolor="#a2c4c9")
+    numerodecapas.configure(highlightbackground="#a2c4c9")
     if(numerodecapas.get() != ""):
-        numero = int(numerodecapas.get())
-        if numero > 0:
+        try:
+            numero = int(numerodecapas.get())
+        except:
+            esnumero = False
+            numerodecapas.configure(highlightcolor="red")
+            numerodecapas.configure(highlightbackground="red")
+            messagebox.showwarning('Dato Incorrecto', 'Tenga en cuenta que el Numero de capas debe se un dato de tipo entero y mayor que 0')
+        if esnumero == True and numero > 0:
             for i in range(0, len(miscapas)):
                 miscapas.pop()
             capapadre = LabelFrame(vista)
