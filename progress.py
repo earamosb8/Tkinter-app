@@ -1,3 +1,4 @@
+from os import error
 from tkinter import *
 from tkinter.ttk import *
 import time
@@ -145,33 +146,86 @@ def createNewWindow():
 def validador(parametro,pos,tipo):
     entrys[pos].configure(highlightcolor="#a2c4c9")
     entrys[pos].configure(highlightbackground="#a2c4c9")
-    if parametro:
+    if parametro[pos]:
+        # float(valor)
         if tipo == "float":
-            z = re.compile(r"^(?:\d+(?:\.\d*)?|\.\d+)$")
-        if tipo == "int":
-            z = re.compile(r'^[0-9]{1,10}$')
-        if z.search(str(parametro)) is None or int(parametro) <= 0:
-            entrys[pos].configure(highlightcolor="red")
-            entrys[pos].configure(highlightbackground="red")
-            fallo = 0
-            return fallo
+            try:
+                encontrado = parametro[pos].find(".")
+                if encontrado > -1:
+                    valor = float(parametro[pos])
+                    if valor <= 0:
+                        entrys[pos].configure(highlightcolor="red")
+                        entrys[pos].configure(highlightbackground="red")
+                        fallo = 0
+                        return fallo
+                if encontrado == -1:
+                    entrys[pos].configure(highlightcolor="red")
+                    entrys[pos].configure(highlightbackground="red")
+                    fallo = 0
+                    return fallo
+            except:
+                entrys[pos].configure(highlightcolor="red")
+                entrys[pos].configure(highlightbackground="red")
+                fallo = 0
+                return fallo
 
-def validadornietos(nieto,valor,tipo):
+        if tipo == "int":
+            try:
+                valor = int(entrys[pos].get())
+                print(valor)
+                if valor <= 0:
+                    entrys[pos].configure(highlightcolor="red")
+                    entrys[pos].configure(highlightbackground="red")
+                    fallo = 0
+                    return fallo
+            except:
+                entrys[pos].configure(highlightcolor="red")
+                entrys[pos].configure(highlightbackground="red")
+                fallo = 0
+                return fallo
+            #try:    
+                #
+                #else:
+                    #if tipo == "float":
+                        #entrys[pos].insert(0,float(entrys[pos].get()))
+            #except:
+                    #fallo = 0
+                    #return fallo
+
+def validadornietos(nieto,tipo):
     nieto.configure(highlightcolor="#a2c4c9")
     nieto.configure(highlightbackground="#a2c4c9")
     if tipo == "float":
-        z = re.compile(r"^(?:\d+(?:\.\d*)?|\.\d+)$")
+        try:
+            encontrado = (nieto.get().find("."))
+            print(encontrado)
+            if encontrado > -1:
+                valor =  float(nieto.get())
+            if encontrado == -1:
+                nieto.configure(highlightcolor="red")
+                nieto.configure(highlightbackground="red")
+                fallo = 0
+                return fallo
+
+        except:
+                nieto.configure(highlightcolor="red")
+                nieto.configure(highlightbackground="red")
+                fallo = 0
+                return fallo
+
     if tipo == "int":
-        z = re.compile(r'^[0-9]{1,10}$')
-    try:
-        if z.search(str(valor)) is None or int(valor) <= 0:
+        try:
+            valor = int(nieto.get())
+            if valor <= 0:
+                    nieto.configure(highlightcolor="red")
+                    nieto.configure(highlightbackground="red")
+                    fallo = 0
+                    return fallo
+        except:
             nieto.configure(highlightcolor="red")
             nieto.configure(highlightbackground="red")
             fallo = 0
             return fallo
-    except:
-        fallo = 0
-        return fallo
 
        
             
@@ -205,25 +259,25 @@ def guardar():
     for parametro in parametros:
         if parametro == "":
             camposLlenos = False
-            messagebox.showwarning('Campos Vacios', 'Tenga en cuenta que todos los campos son obligatorios')
+            messagebox.showwarning('Campos Vacios', 'Tenga en cuenta que todos los campos son obligatorios.')
             break
     if camposLlenos == True:
         for i in range(1,5):
             if(i == 1 or i == 2):
-                numero = validador(parametros[i],i,"float")
+                numero = validador(parametros,i,"float")
                 if numero == 0:
                     if i == 1:
-                        mensaje = "El dato de la Frecuencia Inicial debe ser de tipo decimal positivo \n"
+                        mensaje = "El dato de la Frecuencia Inicial debe ser de tipo decimal positivo. \n"
                     if i == 2:
-                        mensaje = mensaje + "El dato de la Frecuencia Inicial debe ser tipo decimal de tipo decimal positivo \n"
+                        mensaje = mensaje + "El dato de la Frecuencia Final debe ser tipo decimal positivo. \n"
                     resultado = False
             if(i == 3 or i == 4):
-                numero = validador(parametros[i],i,"int")
+                numero = validador(parametros,i,"int")
                 if numero == 0:
                     if i == 3:
-                        mensaje = mensaje + "El Numero de Particiones de Frecuencia debe ser de tipo entero \n"
+                        mensaje = mensaje + "El Numero de Particiones de Frecuencia debe ser de tipo entero positivo. \n"
                     if i == 4:
-                        mensaje = mensaje + "El Numero Total de periodos debe ser de tipo entero \n"
+                        mensaje = mensaje + "El Numero Total de periodos debe ser de tipo entero positivo. \n"
                     resultado = False    
         for hijos in miscapas:
             for nietos in hijos.winfo_children():
@@ -231,30 +285,34 @@ def guardar():
                     x = str(nietos)
                     x = x.split(".")
                     if x[6] == "!entry":
-                        valor =  nietos.get()
-                        numero = validadornietos(nietos,valor,"int")
+                        numero = validadornietos(nietos,"float")
                         if numero == 0:
-                            mensaje2 = "El Ancho de la Capa debe ser de tipo entero\n"
+                            mensaje2 = "El Ancho de la Capa debe ser de tipo decimal positivo o negativo, puede usar notacion cientifica si lo desea.\n"
                             resultado = False
+                            
                     if x[6] == "!entry2":
                         tipoperfil =  nietos.get()
-                    if x[6] == "!entry3" or x[6] == "!entry4" or x[6] == "!entry5" and tipoperfil=="2":
-                        valor =  nietos.get()
-                        numero = validadornietos(nietos,valor,"float")
-                        if numero == 0:
-                            encontrado = mensaje2.find("Los Parametros A,B y C del Tipo de perfil deben ser decimales\n")
-                            if encontrado > -1:
-                                mensaje2.replace("Los Parametros A,B y C del Tipo de perfil deben ser decimales\n", "Los Parametros A,B y C del Tipo de perfil deben ser decimales\n")
-                            else:
-                                mensaje2 += str("Los Parametros A,B y C del Tipo de perfil deben ser decimales\n")
-                            resultado = False
+                    if x[6] == "!entry3":
+                        numero = validadornietos(nietos,"float")
+                    if x[6] == "!entry4":
+                        numero = validadornietos(nietos,"float")
+                    
+                    if x[6] == "!entry5" and tipoperfil=="2":
+                        numero = validadornietos(nietos,"float")
+
+                    if numero == 0:
+                        encontrado = mensaje2.find("Los Parametros A,B y C del Tipo de perfil deben ser decimales\n")
+                        if encontrado > -1:
+                            mensaje2.replace("Los Parametros A,B y C del Tipo de perfil deben ser decimales\n", "Los Parametros A,B y C del Tipo de perfil deben ser decimales\n")
+                        else:
+                            mensaje2 += str("Los Parametros A,B y C del Tipo de perfil deben ser decimales\n")
+                        resultado = False
                         #tipoperfil =  nietos.get()
                         #print(tipoperfil)
                     if x[6] == "!entry5" and tipoperfil=="1":
                         continue
                     if x[6] == "!entry6":
-                        valor =  nietos.get()
-                        numero = validadornietos(nietos,valor,"int")
+                        numero = validadornietos(nietos,"int")
                         if numero == 0:
                             mensaje2 +=str("El Numero de Particiones debe ser de tipo entero positivo")
                             resultado = False
@@ -262,12 +320,15 @@ def guardar():
         if resultado is False:
             mensaje = mensaje + mensaje2
             messagebox.showwarning('Advertencia!!!',mensaje)
-            resultado = True
-                
-        #archivo=open("CTETMF.esf","w")
-        #for p in parametros:
-            #archivo.write(p+"\n")
-        #archivo.close()
+        
+
+        if resultado is True:
+            messagebox.showwarning('Advertencia!!!',"Datos correctos")    
+            archivo=open("CTETMF.esf","w")
+            for p in parametros:
+
+                archivo.write(p+"\n")
+            archivo.close()
 
           
 
