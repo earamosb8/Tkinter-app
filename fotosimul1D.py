@@ -27,6 +27,12 @@ posicion = str(anchoVentana) + "x" + str(altoVentana) + "+" + str(x_ventana) + "
 ventana.geometry(posicion)
 ventana.resizable(False, False)
 clicked = []
+entrys = []
+cajaFinicial = ""
+cajaFfinal=""
+cajaNpFrecuencia=""
+cajaNtPeriodos=""
+escala = ["GHz","THz","PHz"]
 
 s = Style()
 s.configure("TCombobox", selectBackground='green')
@@ -74,6 +80,17 @@ def createNewWindow():
     clicked=""
     clicked=StringVar()
 
+    def validar(event):
+        x = clicked.get()
+        if x == "GHz":
+            entrys[0] = "1"
+        elif x == "THz":
+            entrys[0] = "2"
+        elif x == "PHz":
+            entrys[0] = "3"
+        print(x)
+    ventana.withdraw()
+
 
     menuprincipal = tk.Toplevel(ventana)
     anchoVentana = 830
@@ -91,16 +108,69 @@ def createNewWindow():
     frameCapas = tk.LabelFrame(menuprincipal, background="white")
 
     subtitlegenerales= tk.Label(frameGenerales, text="Generales", font="Calibri 18 bold", foreground="#08469B", background="white")
+    
+    opcionBanda = tk.Label(frameGenerales, text="Ancho de banda para la frecuencia", font="Calibri 12", foreground="#08469B", background="white")
+    cajaBanda = tk.OptionMenu(frameGenerales, clicked, *escala, command=validar)
+    #entrys.append("1")
+    cajaBanda['menu'].invoke(escala[0])
+    cajaBanda.config(height= 1 , width=3,background="white", highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, font="Calibri 10 bold")
 
-    #Posicionamiento en pantalla de los elementos
+    opcionFinicial = tk.Label(frameGenerales, text="Frecuencia inicial", font="Calibri 12", foreground="#08469B", background="white")
+    cajaFinicial = tkinter.Entry(frameGenerales, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2) 
+
+    opcionFfinal = tk.Label(frameGenerales, text="Frecuencia final", font="Calibri 12", foreground="#08469B", background="white")   
+    cajaFfinal = tkinter.Entry(frameGenerales, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
+    
+    opcionNpFrecuencia = tk.Label(frameGenerales, text="Número de particiones de frecuencia", font="Calibri 12", foreground="#08469B", background="white")
+    cajaNpFrecuencia = tkinter.Entry(frameGenerales, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
+    
+    opcionNtPeriodos = tk.Label(frameGenerales, text="Número total de periodos", font="Calibri 12", foreground="#08469B", background="white")
+    cajaNtPeriodos = tkinter.Entry(frameGenerales, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
+
+    #Creación del Canvas
+    #mycanvas = Canvas(frameCapas, height=250, width=350, background="white")
+    #mycanvas.pack(side=LEFT, fill="both", expand="yes")
+
+    #Creación del Scrollbar
+    #yscrollbar = ttk.Scrollbar(frameCapas, orient="vertical", command=mycanvas.yview)
+    #yscrollbar.pack(side=RIGHT, fill="y")
+
+    #mycanvas.configure(yscrollcommand=yscrollbar.set)
+    #mycanvas.bind('<Configure>', lambda e: mycanvas.configure(scrollregion=mycanvas.bbox('all')))
+
+    #myframe = Frame(mycanvas, height=250, width=350, background="white")
+    #mycanvas.create_window((0,0), window=myframe, anchor="nw")
+
+
+    #titleCapas = tk.Label(frameCapas, text = "Capas", font="Calibri 18 bold", foreground="#08469B", background="white")
+  
+
+   #Posicionamiento en pantalla de los elementos
     titleMenu.place(x=0, y=0, width=830, height=50)
-
-    #Posicionamiento en pantalla del LabelFrame
     frameGenerales.place(x=10, y=55, width=400, height=300)
     frameCapas.place(x=420, y=55, width=400, height=300)
 
     #Posicionamiento parametros Generales
-    subtitlegenerales.place(x=10, y=0)
+    subtitlegenerales.place(x=10, y=10)
+
+    opcionBanda.place(x=10, y=60)
+    cajaBanda.place(x=270, y=60, width=110)
+
+    opcionFinicial.place(x=10, y=100)
+    cajaFinicial.place(x=270, y=100, width=110)
+    
+    opcionFfinal.place(x=10, y=140)
+    cajaFfinal.place(x=270, y=140, width=110)
+
+    opcionNpFrecuencia.place(x=10, y=180)
+    cajaNpFrecuencia.place(x=270, y=180, width=110)
+   
+    opcionNtPeriodos.place(x=10, y=220)
+    cajaNtPeriodos.place(x=270, y=220, width=110)
+
+
+    #Posicionamiento parametros Capas
+    #titleCapas.place(x=10, y=0)
 
     
 
