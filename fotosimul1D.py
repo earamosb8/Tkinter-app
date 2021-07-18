@@ -27,12 +27,19 @@ posicion = str(anchoVentana) + "x" + str(altoVentana) + "+" + str(x_ventana) + "
 ventana.geometry(posicion)
 ventana.resizable(False, False)
 clicked = []
+capaNumero = ""
+capaPanel = ""
 entrys = []
+parametros = []
 cajaFinicial = ""
 cajaFfinal=""
 cajaNpFrecuencia=""
 cajaNtPeriodos=""
+capas = ""
+elements = []
+miscapas = []
 escala = ["GHz","THz","PHz"]
+labels= []
 
 s = Style()
 s.configure("TCombobox", selectBackground='green')
@@ -91,7 +98,6 @@ def createNewWindow():
         print(x)
     ventana.withdraw()
 
-
     menuprincipal = tk.Toplevel(ventana)
     anchoVentana = 830
     altoVentana = 450
@@ -111,7 +117,7 @@ def createNewWindow():
     
     opcionBanda = tk.Label(frameGenerales, text="Ancho de banda para la frecuencia", font="Calibri 12", foreground="#08469B", background="white")
     cajaBanda = tk.OptionMenu(frameGenerales, clicked, *escala, command=validar)
-    #entrys.append("1")
+    entrys.append("1")
     cajaBanda['menu'].invoke(escala[0])
     cajaBanda.config(height= 1 , width=3,background="white", highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, font="Calibri 10 bold")
 
@@ -127,22 +133,44 @@ def createNewWindow():
     opcionNtPeriodos = tk.Label(frameGenerales, text="Número total de periodos", font="Calibri 12", foreground="#08469B", background="white")
     cajaNtPeriodos = tkinter.Entry(frameGenerales, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
 
+    titleCapas = tk.Label(frameCapas, text = "Capas", font="Calibri 18 bold", foreground="#08469B", background="white")
+
+    opcionNCapas = tk.Label(frameCapas, text="Número de capas de la estructura", font="Calibri 12", foreground="#08469B", background="white")
+    cajaNCapas = tkinter.Entry(frameCapas, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
+    buttonCrearCapa = tkinter.Button(frameCapas, text = "Crear", width=4,height=1, font="Calibri 11 bold", foreground="black", background="#B7C800", cursor="hand2")
+
+    capapadre = tk.LabelFrame(frameCapas, height=180, width=400, bg="white")
+
     #Creación del Canvas
-    #mycanvas = Canvas(frameCapas, height=250, width=350, background="white")
-    #mycanvas.pack(side=LEFT, fill="both", expand="yes")
+    mycanvas = Canvas(capapadre, height=400, width=400, bg="white")
+    mycanvas.pack(side=LEFT, fill="both", expand="yes")
 
     #Creación del Scrollbar
-    #yscrollbar = ttk.Scrollbar(frameCapas, orient="vertical", command=mycanvas.yview)
-    #yscrollbar.pack(side=RIGHT, fill="y")
+    yscrollbar = tk.Scrollbar(capapadre, orient="vertical", command=mycanvas.yview)
+    yscrollbar.pack(side=RIGHT, fill="y")
+    mycanvas.configure(yscrollcommand=yscrollbar.set, width=350, height=180, bg="white")
+    mycanvas.bind('<Configure>', lambda e: mycanvas.configure(scrollregion=mycanvas.bbox('all')))
+    myframe = tk.Frame(mycanvas, height=760, width=500, bg="white")
+    mycanvas.create_window((0,0), window=myframe, anchor="nw")
 
-    #mycanvas.configure(yscrollcommand=yscrollbar.set)
-    #mycanvas.bind('<Configure>', lambda e: mycanvas.configure(scrollregion=mycanvas.bbox('all')))
+    titulocapaN = tk.Label(myframe, text="Capa n", font="Calibri 12 bold", foreground="white", background="#08469B")
+    labelAnchoCapa = tk.Label(myframe, text="Ancho de la capa:", font="Calibri 12", foreground="#08469B", background="white" )
+    anchoCapa = tkinter.Entry(myframe, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
+    
+    labeltipodeperfil = tk.Label(myframe, text="Tipo de perfil:", font="Calibri 12", foreground="#08469B", background="white")
+    labelparametrosTipoPerfil = tk.Label(myframe, text="Parámetros del tipo de perfil:", font="Calibri 12", foreground="#08469B", background="white")
+    
+    labelparametroA = tk.Label(myframe, text="A", font="Calibri 12 bold", foreground="#08469B", background="white")
+    parametroA = tkinter.Entry(myframe, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
 
-    #myframe = Frame(mycanvas, height=250, width=350, background="white")
-    #mycanvas.create_window((0,0), window=myframe, anchor="nw")
+    labelparametroB = tk.Label(myframe, text="B", font="Calibri 12 bold", foreground="#08469B", background="white")
+    parametroB = tkinter.Entry(myframe, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
 
+    labelparametroC = tk.Label(myframe, text="C", font="Calibri 12 bold", foreground="#08469B", background="white")
+    parametroC = tkinter.Entry(myframe, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
 
-    #titleCapas = tk.Label(frameCapas, text = "Capas", font="Calibri 18 bold", foreground="#08469B", background="white")
+    labelnumeroParticiones = tk.Label(myframe, text="Número de particiones:", font="Calibri 12", foreground="#08469B", background="white")
+    numeroParticiones = tkinter.Entry(myframe, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2)
   
 
    #Posicionamiento en pantalla de los elementos
@@ -170,9 +198,38 @@ def createNewWindow():
 
 
     #Posicionamiento parametros Capas
-    #titleCapas.place(x=10, y=0)
+    titleCapas.place(x=10, y=10)
 
+    opcionNCapas.place(x=10, y=60)
+    cajaNCapas.place(x=240, y=60, width=65)
+
+    buttonCrearCapa.place(x=310, y=60, width=75, height=27)
+    capapadre.place(x=12, y=105)
+
+    titulocapaN.place(x=0, y=0, width=360, height=30)
     
+    labelAnchoCapa.place(x=10, y=50)
+    anchoCapa.place(x=180, y=50, width=110)
+
+    labeltipodeperfil.place(x=10, y=90)
+
+
+    labelparametrosTipoPerfil.place(x=10, y=130)
+
+    labelparametroA.place(x=42, y=170)
+    parametroA.place(x=10, y=210, width=80)
+
+    labelparametroB.place(x=145, y=170)
+    parametroB.place(x=112, y=210, width=80)
+
+    labelparametroC.place(x=240, y=170)
+    parametroC.place(x=210, y=210, width=80)
+
+    labelnumeroParticiones.place(x=10, y=250)
+    numeroParticiones.place(x=180, y=250, width=110)
+
+    buttonEnviarDatos = tkinter.Button(menuprincipal, text = "Guardar",cursor="hand2", width=8, height=1, font="Calibri 12 bold", foreground="black", background="#B7C800")
+    buttonEnviarDatos.place(x=375, y = 380, width=80, height=30)
 
     
     piepagina = tk.Label(menuprincipal, background="#F5841F")
