@@ -260,7 +260,14 @@ def createNewWindow():
     labelnumeroParticiones.place(x=35, y=250)
     numeroParticiones.place(x=205, y=250, width=110)
 
-    buttonEnviarDatos = tk.Button(menuprincipal, text = "Guardar",cursor="hand2", width=8, height=1, font="Calibri 12 bold", foreground="black", background="#B7C800", activebackground="#a2c4c9", anchor="center", relief="flat", bd=1)
+    def SaveData():
+        MsgBox = tk.messagebox.askquestion ('Sistema fotónico 1D','Está seguro que desea guardar los parámetros?',icon = 'error')
+        if MsgBox == 'yes':
+            tk.messagebox.showinfo('Sistema fotónico 1D','Parámetros guardados satisfactoriamente')
+        else:
+            menuprincipal.destroy()
+
+    buttonEnviarDatos = tk.Button(menuprincipal, text = "Guardar",cursor="hand2", width=8, height=1, font="Calibri 12 bold", foreground="black", background="#B7C800", activebackground="#a2c4c9", anchor="center", relief="flat", bd=1, command=SaveData)
     buttonEnviarDatos.place(x=375, y = 477, width=80, height=30)
 
     
