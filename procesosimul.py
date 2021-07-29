@@ -33,16 +33,22 @@ titleMenu = tk.Label(ventanaproceso, text = "Simulación en proceso", font="Cali
 framemodoTE = tk.LabelFrame(ventanaproceso, background="white")
 framemodoTM = tk.LabelFrame(ventanaproceso, background="white")
 
-titulomodoTE = tk.Label(framemodoTE, text="Programa de cálculo modo TE", font="Calibri 18 bold", foreground="#08469B", background="white")
-titulomodoTM = tk.Label(framemodoTM, text="Programa de cálculo modo TM", font="Calibri 18 bold", foreground="#08469B", background="white")
+titulomodoTE = tk.Label(framemodoTE, text="Programa de cálculo modo TE", font="Calibri 18 bold", foreground="#08469B", background="white", anchor="center")
+titulomodoTM = tk.Label(framemodoTM, text="Programa de cálculo modo TM", font="Calibri 18 bold", foreground="#08469B", background="white", anchor="center")
+
+avancemodoTE = tk.Label(framemodoTE, text="25%", font="Calibri 12 bold", foreground="#08469B", background="white", anchor="center")
+avancemodoTM = tk.Label(framemodoTM, text="25%", font="Calibri 12 bold", foreground="#08469B", background="white", anchor="center")
 
 #Posicionamiento en pantalla de los elementos
 titleMenu.place(x=0, y=0, width=830, height=50)
 framemodoTE.place(x=10, y=55, width=400, height=400)
 framemodoTM.place(x=420, y=55, width=400, height=400)
 
-titulomodoTE.place(x=10, y=10)
-titulomodoTM.place(x=10, y=10)
+titulomodoTE.place(x=10, y=10, width=370)
+titulomodoTM.place(x=10, y=10, width=370)
+
+avancemodoTE.place(x=180, y=170)
+avancemodoTM.place(x=180, y=170)
 
 
 #labelAnchoCapa = tk.Label(myframe, text="Ancho de la capa", font="Calibri 12", foreground="#08469B", background="white" )
@@ -68,10 +74,11 @@ def start():
         createNewWindow()
 
 progress_gg = Progressbar(framemodoTE, orient=HORIZONTAL, style="TProgressbar",length=300)
-progress_gg.place(x=10, y=100)
+progress_gg.place(x=45, y=150)
 
-#button = tk.Button(ventanaproceso, text = "Entrar", font="Calibri 12 bold", foreground="black", background="#B7C800", activebackground="#a2c4c9", command=start, cursor="hand2", width=8, height=1, anchor="center", relief="flat", bd=1)
-#button.pack(pady=5)
+progress_gg = Progressbar(framemodoTM, orient=HORIZONTAL, style="TProgressbar",length=300)
+progress_gg.place(x=45, y=150)
+
    
     
 piepagina = tk.Label(ventanaproceso, background="#F5841F")
