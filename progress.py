@@ -130,22 +130,22 @@ def createNewWindow():
     cajaubicacionArchivo.place(x=165, y=100, width=215)
 
     #Parametros Generales
-    subtitlegenerales.place(x=10, y=142)
+    subtitlegenerales.place(x=10, y=140)
 
-    opcionBanda.place(x=10, y=192)
-    cajaBanda.place(x=270, y=192, width=110)
+    opcionBanda.place(x=24, y=245)
+    cajaBanda.place(x=285, y=245, width=110)
 
-    opcionFinicial.place(x=10, y=232)
-    cajaFinicial.place(x=270, y=232, width=110)
+    opcionFinicial.place(x=24, y=285)
+    cajaFinicial.place(x=285, y=285, width=110)
     
-    opcionFfinal.place(x=10, y=272)
-    cajaFfinal.place(x=270, y=272, width=110)
+    opcionFfinal.place(x=24, y=325)
+    cajaFfinal.place(x=285, y=325, width=110)
 
-    opcionNpFrecuencia.place(x=10, y=312)
-    cajaNpFrecuencia.place(x=270, y=312, width=110)
+    opcionNpFrecuencia.place(x=24, y=365)
+    cajaNpFrecuencia.place(x=285, y=365, width=110)
    
-    opcionNtPeriodos.place(x=10, y=352)
-    cajaNtPeriodos.place(x=270, y=352, width=110)
+    opcionNtPeriodos.place(x=24, y=405)
+    cajaNtPeriodos.place(x=285, y=405, width=110)
 
 
     #Posicionamiento parametros Capas
@@ -569,12 +569,12 @@ def crearCapas(vista,numerodecapas,capapadre,buttonEnviarDatos):
             mycanvas.pack(side=LEFT, fill="both", expand="yes")
             yscrollbar = tk.Scrollbar(capapadre, orient="vertical", command=mycanvas.yview)
             yscrollbar.pack(side=RIGHT, fill="y")
-            mycanvas.configure(yscrollcommand=yscrollbar.set,height=280,width=355,bg="white")
+            mycanvas.configure(yscrollcommand=yscrollbar.set,height=290,width=349,bg="white")
             mycanvas.bind('<Configure>', lambda e: mycanvas.configure(scrollregion = mycanvas.bbox('all')))
             myframe = tk.Frame(mycanvas, background="white")
             elements.append(myframe)
             mycanvas.create_window((0,0), window=myframe, anchor="nw")
-            capapadre.place(x=430, y=150)
+            capapadre.place(x=434, y=150)
         
             options = [
                 "Lineal Ax+B", 
@@ -591,9 +591,9 @@ def crearCapas(vista,numerodecapas,capapadre,buttonEnviarDatos):
                 if x == "Exponencial: Aexp(Bx)+C":
                     optiondropdown.delete(0, "end")
                     optiondropdown.insert(0,"2")
-                    parametro3[i-1].place(x=280, y=180)
-                    labelparametroC[i-1].place(x=315, y=150)
-                elif x == "Lineal Ax+B":
+                    parametro3[i-1].place(x=230, y=206)
+                    labelparametroC[i-1].place(x=266, y=176)
+                elif x == "Lineal: Ax+B":
                     
                     optiondropdown.delete(0, "end")
                     optiondropdown.insert(0,"1")
@@ -606,9 +606,10 @@ def crearCapas(vista,numerodecapas,capapadre,buttonEnviarDatos):
             for hijo in myframe.winfo_children():
                 hijo.destroy()
             for i in range(1,numero + 1):
-                capaPanel = tk.LabelFrame(myframe,height=270,width=350,bg = "white")
+                capaPanel = tk.LabelFrame(myframe,height=285,width=352,bg = "white")
                 labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa:", font="Calibri 12", foreground="#08469B", background="white" )
                 anchoCapa = tkinter.Entry(capaPanel, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2,relief="flat", bd=1)
+                labelTextoEjemplo = Label(capaPanel, text="Escribir en notación científica \nEjemplo: 8e06", anchor="nw", font="Calibri 8", foreground="#08469B", background="white" )
                 tipodeperfil = tk.Label(capaPanel, text="Tipo de perfil:", font="Calibri 12", foreground="#08469B", background="white")
                 clicked.append(StringVar())
                 indice.append(i-1)
@@ -635,18 +636,19 @@ def crearCapas(vista,numerodecapas,capapadre,buttonEnviarDatos):
                 particiones = tkinter.Entry(capaPanel, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2,relief="flat", bd=1)
                 capaNumero = tk.Label(capaPanel, text="Capa " + str(i),font = "Calibri 12 bold",width=50 ,foreground="white", background="#08469B")
                 miscapas.append(capaPanel)
-                capaNumero.place(x=0, y=2)
-                labelAnchoCapa.place(x=10, y=40)
-                anchoCapa.place(x=180, y=40)
-                tipodeperfil.place(x=10, y=80)
-                dropdowntipo[i-1].place(x=210,y=80)
-                labelparametros.place(x=10, y=120)
-                labelparametroA.place(x=70, y=150)
-                labelparametroB.place(x=188, y=150)
-                parametro1.place(x=35, y=180)
-                parametro2.place(x=152, y=180)
-                labelparticiones.place(x=10, y=220)
-                particiones.place(x=200, y=220)
+                capaNumero.place(x=0, y=0, width=347, height=30)
+                labelAnchoCapa.place(x=5, y=40)
+                anchoCapa.place(x=165, y=40, width=105)
+                labelTextoEjemplo.place(x=165, y=68)
+                tipodeperfil.place(x=5, y=110)
+                dropdowntipo[i-1].place(x=165,y=110)
+                labelparametros.place(x=5, y=150)
+                labelparametroA.place(x=60, y=176)
+                labelparametroB.place(x=165, y=176)
+                parametro1.place(x=25, y=206)
+                parametro2.place(x=128, y=206)
+                labelparticiones.place(x=5, y=246)
+                particiones.place(x=165, y=246, width=105)
                 capaPanel.pack(pady=5)
             if len(entrys)==7:
                 entrys.pop(6)
