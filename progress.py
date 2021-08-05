@@ -259,6 +259,7 @@ def validadornietos(nieto,tipo):
 
 
 def guardar():
+    
     parametros = []
     tipoperfil=""
     camposLlenos = True
@@ -266,7 +267,6 @@ def guardar():
     mensaje = ""
     mensaje2 = ""
     try:
-        print(entrys)
         for i in range(0,len(entrys)):
             
             if(i == 1):
@@ -280,7 +280,6 @@ def guardar():
         for nietos in hijos.winfo_children():
            
             if(type(nietos)==tkinter.Entry):
-                print(nietos)
                 x = str(nietos)
                 x = x.split(".")
                 if x[6] == "!entry2":
@@ -289,12 +288,17 @@ def guardar():
                     continue
                 grupo.append(nietos.get())
         parametros.append(grupo)
-    for parametro in parametros:
-        if parametro == "":
-            
+    for p in range(0,len(parametros)):
+        if parametros[p] == "":
             camposLlenos = False
             messagebox.showwarning('Campos Vacios', 'Tenga en cuenta que todos los campos son obligatorios.')
             break
+        if p >= 6:
+            for h in range(0,len(parametros[p])):
+                if parametros[p][h] == "":
+                    camposLlenos = False
+                    messagebox.showwarning('Campos Vacios', 'Tenga en cuenta que todos los campos son obligatorios.')
+                    break
     if camposLlenos == True:
         capasFloat = 1
         for i in range(2,6):
@@ -373,11 +377,6 @@ def guardar():
 
         if resultado is True:
             messagebox.showwarning('Advertencia!!!',"Datos correctos")    
-            #archivo=open("CTETMF.esf","w")
-            #for p in parametros:
-
-                #archivo.write(p+"\n")
-            #archivo.close()
             print(parametros)
             mostrarParametros(parametros)
 
@@ -389,14 +388,27 @@ def mostrarParametros(parametros):
              menuprincipal = n
              break
     menuprincipal.withdraw()
-    ventanaParametros(parametros)
+    ventanaParametros(parametros,menuprincipal)
     return menuprincipal
     
     
+def volver(ventana1,ventana2):
+    ventana1.destroy()
+    ventana2.deiconify()
+
+def creararchivo(parametros):
+    archivo=open("CTETMF.esf","w")
+    for p in range(0,len(parametros)):
+        if p < 6:
+            archivo.write(str(parametros[p])+"\n")
+        elif p >=6 :
+            for h in parametros[p]:
+                archivo.write(str(h)+"\n")
+    archivo.close()
 
 
 
-def ventanaParametros(parametros):
+def ventanaParametros(parametros,menuprincipal):
     ventanaes = tk.Toplevel(ventana)
     ventanaes.title("Sistema fotónico 1D")
     ventanaes.iconbitmap("isotipo.ico")
@@ -430,7 +442,7 @@ def ventanaParametros(parametros):
     #Posicionamiento en pantalla del LabelFrame
     
     
-    frameGenerales = tk.LabelFrame(myframe,background="white",width=500,height=320, relief="flat", bd=1)
+    frameGenerales = tk.LabelFrame(myframe,background="white",width=500,height=300, relief="flat", bd=1)
     
     tituloVentanaSimulada = tk.Label(frameGenerales, text="Estructura simulada", font="Calibri 18 bold", foreground="white", background="#08469B",anchor="center")
     tituloVentanaSimulada.place(x=0, y=0, width=500, height=50)
@@ -482,9 +494,8 @@ def ventanaParametros(parametros):
     
     frameCapas = tk.LabelFrame(myframe,background="white",width=500, height=500, relief="flat", bd=1)
     frameCapas.pack(fill='x')
-    distance = 0
     for c in range (7, len(parametros)):
-        Labelframecapa = tk.LabelFrame(frameCapas, background="white", width=440, height=280, highlightbackground="white", highlightcolor="white", highlightthickness=2, relief="flat", bd=1)
+        Labelframecapa = tk.LabelFrame(frameCapas, background="white", width=440, height=275, highlightbackground="white", highlightcolor="white", highlightthickness=2, relief="flat", bd=1)
         capa = tk.Label(Labelframecapa, text="Parametros de la Capa "+ str(c - 6), font="Calibri 12 bold", foreground="white", background="#08469B",anchor="center")
         capa.place(x=0, y=0, width=425)
         anchocapa = tk.Label(Labelframecapa, text="Ancho de la capa:", font="Calibri 12", foreground="#08469B", background="white")
@@ -494,7 +505,7 @@ def ventanaParametros(parametros):
         tipoPerfil = tk.Label(Labelframecapa, text="Tipo de perfil:", font="Calibri 12", foreground="#08469B",background="white")
         tipoPerfil.place(x=0, y=70)
         if parametros[c][1] == "1":
-            datoTipoPerfil = tk.Label(Labelframecapa, text="Lineal Ax+B",  font="Calibri 12", background="white")
+            datoTipoPerfil = tk.Label(Labelframecapa, text="Lineal: Ax+B",  font="Calibri 12", background="white")
             datoTipoPerfil.place(x=260, y=70)
         elif parametros[c][1] == "2":
             datoTipoPerfil = tk.Label(Labelframecapa, text="Exponencial: Aexp(Bx)+C",  font="Calibri 12", background="white")
@@ -518,28 +529,26 @@ def ventanaParametros(parametros):
             numeroParticiones.place(x=0, y=245)
             datoNumeroParticiones = tk.Label(Labelframecapa, text=parametros[c][5], font="Calibri 12", background="white")
             datoNumeroParticiones.place(x=260, y=245)
-            Labelframecapa.pack()
         elif len(parametros[c]) == 5:
             numeroParticiones = tk.Label(Labelframecapa, text="Número de particiones:", font="Calibri 12", foreground="#08469B", background="white")
             numeroParticiones.place(x=0, y=210)
             datoNumeroParticiones = tk.Label(Labelframecapa, text=parametros[c][4], font="Calibri 12", background="white")
             datoNumeroParticiones.place(x=260, y=210)
             Labelframecapa.configure(height=250)
-            Labelframecapa.pack()
+        Labelframecapa.pack()
         frameCapas.pack()
-    """pregunta = tk.Label(myframe, text="¿Está seguro que desea realizar la simulación?", font="Calibri 14 bold", foreground="#08469B", background="white")
-    pregunta.place(x=35, y=660)
-
-    buttonSi = tk.Button(myframe, text = "Si", font="Calibri 12 bold", background="#B7C800", cursor="hand2",relief="flat", bd=1)
-    buttonSi.place(x=180, y = 700, width=50, height=30)
-
-    buttonNo = tk.Button(myframe, text = "No", font="Calibri 12 bold", background="#B7C800", cursor="hand2",relief="flat", bd=1)
-    buttonNo.place(x=250, y = 700, width=50, height=30)
-
-    piepagina = tk.Label(myframe, background="#F5841F")
-    piepagina.place(x=0, y = 740, width=500, height=20)
-    Labelframecapa.place(x=40, y = ejey)
-    ejey = ejey + 500"""
+    pregunta = tk.Label(frameCapas, text="¿Está seguro que desea realizar la simulación?", font="Calibri 14 bold", foreground="#08469B", background="white")
+    pregunta.pack()
+    Labelbotones = tk.LabelFrame(frameCapas, background="white", width=500, height=30, highlightbackground="white", highlightcolor="white", highlightthickness=2, relief="flat", bd=1)
+    Labelbotones.pack()
+    buttonSi = tk.Button(Labelbotones, text = "Si", font="Calibri 12 bold", background="#B7C800", cursor="hand2",relief="flat", bd=1,width=10,command= lambda: creararchivo(parametros))
+    buttonSi.pack(side=LEFT,padx=5)
+    buttonNo = tk.Button(Labelbotones, text = "No", font="Calibri 12 bold", background="#B7C800", cursor="hand2",relief="flat", bd=1,width=10,command= lambda: volver(ventanaes,menuprincipal))
+    buttonNo.pack(side=RIGHT,padx=5)
+    
+    piepagina = tk.Label(frameCapas, background="#F5841F")
+    piepagina.pack(fill="x")
+    
              
 
           
@@ -597,7 +606,7 @@ def crearCapas(vista,numerodecapas,capapadre,buttonEnviarDatos):
             capapadre.place(x=434, y=150)
         
             options = [
-                "Lineal Ax+B", 
+                "Lineal: Ax+B", 
                 "Exponencial: Aexp(Bx)+C",
             ]
             
@@ -609,12 +618,13 @@ def crearCapas(vista,numerodecapas,capapadre,buttonEnviarDatos):
             def validar(event,i,optiondropdown):
                 x = clicked[i-1].get()
                 if x == "Exponencial: Aexp(Bx)+C":
+                    print("entre")
                     optiondropdown.delete(0, "end")
                     optiondropdown.insert(0,"2")
                     parametro3[i-1].place(x=230, y=206)
                     labelparametroC[i-1].place(x=266, y=176)
                 elif x == "Lineal: Ax+B":
-                    
+                    print("line")
                     optiondropdown.delete(0, "end")
                     optiondropdown.insert(0,"1")
                     parametro3[i-1].place_forget()
