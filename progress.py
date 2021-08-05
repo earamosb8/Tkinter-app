@@ -39,6 +39,10 @@ escala = ["GHz","THz","PHz"]
 labels = []
 
 
+scroll = Style()
+scroll.configure('TScrollbar',background='blue')
+
+
 
 # Creacion de ventana principal
 def createNewWindow():
@@ -62,10 +66,11 @@ def createNewWindow():
     y_ventana = ventana.winfo_screenheight() // 2 - altoVentana // 2
     posicion = str(anchoVentana) + "x" + str(altoVentana) + "+" + str(x_ventana) + "+" + str(y_ventana)
     menuprincipal.geometry(posicion)
+    menuprincipal.iconbitmap("isotipo.ico")
     menuprincipal.configure(bg='white')
     menuprincipal.resizable(False, False)
-    frameGenerales = tk.LabelFrame(menuprincipal, background="white")
-    frameCapas = tk.LabelFrame(menuprincipal, background="white")
+    frameGenerales = tk.LabelFrame(menuprincipal, background="white",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
+    frameCapas = tk.LabelFrame(menuprincipal, background="white",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
     titleMenu = tk.Label(menuprincipal, text = "Parámetros", font="Calibri 18 bold", foreground="white", background="#08469B")
     #titleMenu.config(font=("font="Calibri bold"", 18))
     subtitlenombreA = tk.Label(frameGenerales, text="Datos del archivo", font="Calibri 18 bold", foreground="#08469B", background="white")
@@ -376,7 +381,6 @@ def guardar():
         
 
         if resultado is True:
-            messagebox.showwarning('Advertencia!!!',"Datos correctos")    
             print(parametros)
             mostrarParametros(parametros)
 
@@ -414,6 +418,7 @@ def ventanaParametros(parametros,menuprincipal):
     ventanaes.iconbitmap("isotipo.ico")
     ventanaes.configure(bg='white')
     ventanaes.resizable(False, False)
+    ventanaes.protocol('WM_DELETE_WINDOW', closeProgram)
     # redimensionar nuestra ventana
     anchoVentana = 500
     altoVentana = 600
@@ -592,15 +597,15 @@ def crearCapas(vista,numerodecapas,capapadre,buttonEnviarDatos):
         if esnumero == True and numero > 0:
             for i in range(0, len(miscapas)):
                 miscapas.pop()
-            capapadre = tk.LabelFrame(vista)
+            capapadre = tk.LabelFrame(vista,highlightbackground="white", highlightcolor="white", highlightthickness=1, relief="flat", bd=1)
             #capapadre.place(x=75, y=430)
-            mycanvas = Canvas(capapadre, background="white")
+            mycanvas = Canvas(capapadre, background="white",highlightbackground="white", highlightcolor="white", highlightthickness=2, relief="flat", bd=1)
             mycanvas.pack(side=LEFT, fill="both", expand="yes")
             yscrollbar = tk.Scrollbar(capapadre, orient="vertical", command=mycanvas.yview)
             yscrollbar.pack(side=RIGHT, fill="y")
             mycanvas.configure(yscrollcommand=yscrollbar.set,height=290,width=349,bg="white")
             mycanvas.bind('<Configure>', lambda e: mycanvas.configure(scrollregion = mycanvas.bbox('all')))
-            myframe = tk.Frame(mycanvas, background="white")
+            myframe = tk.Frame(mycanvas, background="white",highlightbackground="white", highlightcolor="white", highlightthickness=2, relief="flat", bd=1)
             elements.append(myframe)
             mycanvas.create_window((0,0), window=myframe, anchor="nw")
             capapadre.place(x=434, y=150)
@@ -636,7 +641,7 @@ def crearCapas(vista,numerodecapas,capapadre,buttonEnviarDatos):
             for hijo in myframe.winfo_children():
                 hijo.destroy()
             for i in range(1,numero + 1):
-                capaPanel = tk.LabelFrame(myframe,height=285,width=352,bg = "white")
+                capaPanel = tk.LabelFrame(myframe,height=285,width=352,bg = "white",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
                 labelAnchoCapa = tk.Label(capaPanel, text="Ancho de la capa:", font="Calibri 12", foreground="#08469B", background="white" )
                 anchoCapa = tkinter.Entry(capaPanel, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2,relief="flat", bd=1)
                 labelTextoEjemplo = Label(capaPanel, text="Escribir en notación científica \nEjemplo: 8e06", anchor="nw", font="Calibri 8", foreground="#08469B", background="white" )
