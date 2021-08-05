@@ -411,7 +411,7 @@ def ventanaParametros(parametros):
     ventanaes.geometry(posicion)
 
     #Agregar LabelFrame Padre
-    framePadre = LabelFrame(ventanaes)
+    framePadre = tk.LabelFrame(ventanaes, background="white", relief="flat", bd=1)
 
     #Creación del Canvas
     mycanvas = Canvas(framePadre, height=500, width=500, background="white")
@@ -424,106 +424,106 @@ def ventanaParametros(parametros):
     mycanvas.configure(yscrollcommand=yscrollbar.set,height=760, width=280)
     mycanvas.bind('<Configure>', lambda e: mycanvas.configure(scrollregion=mycanvas.bbox('all')))
 
-    myframe = tk.Frame(mycanvas, width=500, background="white")
+    myframe = tk.Frame(mycanvas, width=500, background="white", relief="flat", bd=1)
     mycanvas.create_window((0,0), window=myframe, anchor="nw")
 
     #Posicionamiento en pantalla del LabelFrame
     
     
-    frameGenerales = tk.LabelFrame(myframe,background="white",width=500,height=320)
+    frameGenerales = tk.LabelFrame(myframe,background="white",width=500,height=320, relief="flat", bd=1)
     
     tituloVentanaSimulada = tk.Label(frameGenerales, text="Estructura simulada", font="Calibri 18 bold", foreground="white", background="#08469B",anchor="center")
     tituloVentanaSimulada.place(x=0, y=0, width=500, height=50)
     
 
     nombreArchivo = tk.Label(frameGenerales, text="Nombre del archivo:", font="Calibri 12", foreground="#08469B", background="white")
-    nombreArchivo.place(x=70, y=65)
+    nombreArchivo.place(x=30, y=65)
     datoNombreArchivo = tk.Label(frameGenerales, text=parametros[0], font="Calibri 12", background="white")
-    datoNombreArchivo.place(x=350, y=65)
+    datoNombreArchivo.place(x=290, y=65)
 
     anchoBanda = tk.Label(frameGenerales, text="Ancho de banda para la frecuencia:", font="Calibri 12", foreground="#08469B", background="white")
-    anchoBanda.place(x=70, y=100)
+    anchoBanda.place(x=30, y=100)
     if parametros[1] == "1":
         datoAnchoBanda = tk.Label(frameGenerales, text="GHz", font="Calibri 12", background="white")
-        datoAnchoBanda.place(x=350, y=100)
+        datoAnchoBanda.place(x=290, y=100)
     elif parametros[1] == "2":
         datoAnchoBanda = tk.Label(frameGenerales, text="THz", font="Calibri 12", background="white")
-        datoAnchoBanda.place(x=350, y=100)
+        datoAnchoBanda.place(x=290, y=100)
     elif parametros[1] == "3":
         datoAnchoBanda = tk.Label(frameGenerales, text="PHz", font="Calibri 12", background="white")
-        datoAnchoBanda.place(x=350, y=100)
+        datoAnchoBanda.place(x=290, y=100)
 
     frecuenciaInicial = tk.Label(frameGenerales, text="Frecuencia inicial:", font="Calibri 12", foreground="#08469B", background="white")
-    frecuenciaInicial.place(x=70, y=135)
+    frecuenciaInicial.place(x=30, y=135)
     datoFrecuenciaInicial = tk.Label(frameGenerales, text=parametros[2], font="Calibri 12", background="white")
-    datoFrecuenciaInicial.place(x=350, y=135)
+    datoFrecuenciaInicial.place(x=290, y=135)
 
     frecuenciaFinal = tk.Label(frameGenerales, text="Frecuencia final:", font="Calibri 12", foreground="#08469B", background="white")
-    frecuenciaFinal.place(x=70, y=170)
+    frecuenciaFinal.place(x=30, y=170)
     datoFrecuenciaFinal = tk.Label(frameGenerales, text=parametros[3], font="Calibri 12", background="white")
-    datoFrecuenciaFinal.place(x=350, y=170)
+    datoFrecuenciaFinal.place(x=290, y=170)
 
     NumeroParticiones = tk.Label(frameGenerales, text="Número de particiones de frecuencia:", font="Calibri 12", foreground="#08469B", background="white")
-    NumeroParticiones.place(x=70, y=205)
+    NumeroParticiones.place(x=30, y=205)
     datoNumeroParticiones = tk.Label(frameGenerales, text=parametros[4], font="Calibri 12", background="white")
-    datoNumeroParticiones.place(x=350, y=205)
+    datoNumeroParticiones.place(x=290, y=205)
 
     NumeroTotalPeriodos = tk.Label(frameGenerales, text="Número total de períodos:", font="Calibri 12", foreground="#08469B", background="white")
-    NumeroTotalPeriodos.place(x=70, y=240)
+    NumeroTotalPeriodos.place(x=30, y=240)
     datoNumeroTotalPeriodos = tk.Label(frameGenerales, text=parametros[5], font="Calibri 12", background="white")
-    datoNumeroTotalPeriodos.place(x=350, y=240)
+    datoNumeroTotalPeriodos.place(x=290, y=240)
 
     NumeroCapas = tk.Label(frameGenerales, text="Número de capas de la estructura:", font="Calibri 12", foreground="#08469B", background="white")
-    NumeroCapas.place(x=70, y=275)
+    NumeroCapas.place(x=30, y=275)
     datoNumeroCapas = tk.Label(frameGenerales, text=parametros[6], font="Calibri 12", background="white")
-    datoNumeroCapas.place(x=350, y=275)
+    datoNumeroCapas.place(x=290, y=275)
     framePadre.pack(fill='x')
     frameGenerales.pack(fill=BOTH,expand=True)
     
-    frameCapas = tk.LabelFrame(myframe,background="white",width=500, height=500)
+    frameCapas = tk.LabelFrame(myframe,background="white",width=500, height=500, relief="flat", bd=1)
     frameCapas.pack(fill='x')
     distance = 0
     for c in range (7, len(parametros)):
-        Labelframecapa = tk.LabelFrame(frameCapas, background="white", width=400, height=280)
-        capa = tk.Label(Labelframecapa, text="Parametros de la Capa "+ str(c - 6), font="Calibri 12 bold", foreground="#08469B", background="white")
-        capa.place(x=0, y=0)
+        Labelframecapa = tk.LabelFrame(frameCapas, background="white", width=440, height=280, highlightbackground="white", highlightcolor="white", highlightthickness=2, relief="flat", bd=1)
+        capa = tk.Label(Labelframecapa, text="Parametros de la Capa "+ str(c - 6), font="Calibri 12 bold", foreground="white", background="#08469B",anchor="center")
+        capa.place(x=0, y=0, width=425)
         anchocapa = tk.Label(Labelframecapa, text="Ancho de la capa:", font="Calibri 12", foreground="#08469B", background="white")
         anchocapa.place(x=0, y=35)
         datoanchocapa = tk.Label(Labelframecapa, text=parametros[c][0], font="Calibri 12", background="white")
-        datoanchocapa.place(x=278, y=35)
+        datoanchocapa.place(x=260, y=35)
         tipoPerfil = tk.Label(Labelframecapa, text="Tipo de perfil:", font="Calibri 12", foreground="#08469B",background="white")
         tipoPerfil.place(x=0, y=70)
         if parametros[c][1] == "1":
             datoTipoPerfil = tk.Label(Labelframecapa, text="Lineal Ax+B",  font="Calibri 12", background="white")
-            datoTipoPerfil.place(x=278, y=70)
+            datoTipoPerfil.place(x=260, y=70)
         elif parametros[c][1] == "2":
             datoTipoPerfil = tk.Label(Labelframecapa, text="Exponencial: Aexp(Bx)+C",  font="Calibri 12", background="white")
-            datoTipoPerfil.place(x=278, y=70)
+            datoTipoPerfil.place(x=260, y=70)
         parametrosTipoPerfil = tk.Label(Labelframecapa, text="Parámetros del tipo de perfil:", font="Calibri 12", foreground="#08469B", background="white")
         parametrosTipoPerfil.place(x=0, y=105)
         parametroA = tk.Label(Labelframecapa, text="A:", font="Calibri 12", foreground="#08469B", background="white")
-        parametroA.place(x=120, y=140)
+        parametroA.place(x=55, y=140)
         datoParametroA = tk.Label(Labelframecapa, text=parametros[c][2], font="Calibri 12", background="white")
-        datoParametroA.place(x=160, y=140)
+        datoParametroA.place(x=85, y=140)
         parametroB = tk.Label(Labelframecapa, text="B:", font="Calibri 12", foreground="#08469B", background="white")
-        parametroB.place(x=120, y=175)
+        parametroB.place(x=55, y=175)
         datoParametroB = tk.Label(Labelframecapa, text=parametros[c][3], font="Calibri 12", background="white")
-        datoParametroB.place(x=160, y=175)
+        datoParametroB.place(x=85, y=175)
         if len(parametros[c]) == 6:
             parametroC = tk.Label(Labelframecapa, text="C:", font="Calibri 12", foreground="#08469B", background="white")
-            parametroC.place(x=120, y=210)
+            parametroC.place(x=55, y=210)
             datoParametroC = tk.Label(Labelframecapa, text=parametros[c][4], font="Calibri 12", background="white")
-            datoParametroC.place(x=160, y=210)
+            datoParametroC.place(x=85, y=210)
             numeroParticiones = tk.Label(Labelframecapa, text="Número de particiones:", font="Calibri 12", foreground="#08469B", background="white")
             numeroParticiones.place(x=0, y=245)
             datoNumeroParticiones = tk.Label(Labelframecapa, text=parametros[c][5], font="Calibri 12", background="white")
-            datoNumeroParticiones.place(x=278, y=245)
+            datoNumeroParticiones.place(x=260, y=245)
             Labelframecapa.pack()
         elif len(parametros[c]) == 5:
             numeroParticiones = tk.Label(Labelframecapa, text="Número de particiones:", font="Calibri 12", foreground="#08469B", background="white")
             numeroParticiones.place(x=0, y=210)
             datoNumeroParticiones = tk.Label(Labelframecapa, text=parametros[c][4], font="Calibri 12", background="white")
-            datoNumeroParticiones.place(x=278, y=210)
+            datoNumeroParticiones.place(x=260, y=210)
             Labelframecapa.configure(height=250)
             Labelframecapa.pack()
         frameCapas.pack()
