@@ -9,6 +9,7 @@ import tkinter.font as font
 import re
 from tkinter import messagebox
 from tkinter import ttk
+import os
 
 # creacion de la ventana
 ventana =  Tk();
@@ -400,7 +401,87 @@ def volver(ventana1,ventana2):
     ventana1.destroy()
     ventana2.deiconify()
 
-def creararchivo(parametros):
+def gnu_plot_TETMvsAng(nombre,ran_fre,fi_ff):   # funcion para la escritura del script de visualizacion en GNUPLOT
+    archivo=open(nombre+".plt","w")
+    archivo.write("reset"+"\n")
+    archivo.write("arcizq='"+nombre+"-TE.dat'"+"\n")
+    archivo.write("arcder='"+nombre+"-TM.dat'"+"\n")
+    archivo.write("############################################################"+"\n")
+    archivo.write("# parametros comunes de las figuras"+"\n")
+    archivo.write("############################################################"+"\n")
+    archivo.write("\n")
+    archivo.write("tam=.5"+"\n")
+    archivo.write("ymin="+str(fi_ff.split(",")[0])+" # valor minimo en las y"+"\n")
+    archivo.write("ymax="+str(fi_ff.split(",")[1])+" # valor maximo en las y"+"\n")
+    archivo.write("xmin=0 # valor minimo en las x"+"\n")
+    archivo.write("xmax=90 # valor maximo en las x"+"\n")
+    archivo.write("mtx=2 # No de minor ticks en x"+"\n")
+    archivo.write("mty=4 # No de minor ticks en y"+"\n")
+    archivo.write("septicx=15 # separaci on ticks en x"+"\n")
+    archivo.write("septicy=2 # separacion ticks en y"+"\n")
+    archivo.write("scatics=0.5 # tamaño de los ticks en terminos del default que es 1"+"\n")
+    archivo.write("titizq='TE' # titulo de la figura izquierda"+"\n")
+    archivo.write("titder='TM' # titulo de la figura derecha"+"\n")
+    archivo.write("fuente='Times-New-Roman, 22' # titulo, tipo y tamaño de la fuente"+"\n")
+    archivo.write("ejexlabel='{Angle (°)}' # label del eje x"+"\n")
+    if ran_fre==1:
+       archivo.write("ejeylabel='Frequency (THz)' # label del eje y"+"\n")
+    elif ran_fre==2:
+       archivo.write("ejeylabel='Frequency (GHz)' # label del eje y"+"\n")
+    archivo.write("fulabel='Times-New-Roman, 20' # label tipo y tamaño de la fuente"+"\n")
+    archivo.write("fuejes='Times-New-Roman, 18' # fuente de los ejes y el tamaño"+"\n")
+    archivo.write("\n")
+    archivo.write("set multiplot # ayuda a pintar muchas figuras en una sola, deben especificarse todas las caracteristicas de cada figura"+"\n")
+    archivo.write("\n")
+    archivo.write("#########################################"+"\n")
+    archivo.write("# caracteristicas figura de la izquierda"+"\n")
+    archivo.write("###########################################"+"\n")
+    archivo.write("set palette defined (0 'black',1 'white') #gray"+"\n")
+    archivo.write("# tipo de colores para el density plot"+"\n")
+    archivo.write("set cbrange [0 : 1] # conjunto de valores del rango de colores"+"\n")
+    archivo.write("set pm3d interpolate 0,0 map"+"\n")
+    archivo.write("# utiliza pm3d e interpola de forma automatica ademas 'map' solo lo muestra visto desde arriba"+"\n")
+    archivo.write("set size tam,2*tam # tamaño de la figura con respecto de la terminal"+"\n")
+    archivo.write("set origin 0.05,0. # posicion de la figura"+"\n")
+    archivo.write("unset key # quita nombre de la serie de datos"+"\n")
+    archivo.write("unset colorbox # quita la guia del color, esto pues solo usamos la del lado derecho"+"\n")
+    archivo.write("set xrange[xmax:xmin] # rango de los valores en x"+"\n")
+    archivo.write("set tics scale scatics # muestra los tics en terminos del tamaño por default"+"\n")
+    archivo.write("set xtics septicx nomirror out font fuejes # coloca los tics en x separados por el numero mostrado, sin reflexion en el eje paralelo, con los tics afuera y con su fuente"+"\n")
+    archivo.write("set mxtics mtx # numero de minor tics en x"+"\n")
+    archivo.write("set yrange[ymin:ymax] "+"\n")
+    archivo.write("set ytics septicy nomirror out font fuejes"+"\n")
+    archivo.write("set mytics mty"+"\n")
+    archivo.write("set title titizq font fuente # coloca el titulo de la figura con su fuente"+"\n")
+    archivo.write("set xlabel ejexlabel font fulabel # el titulo del eje x tipo de letra y el tamaño del texto"+"\n")
+    archivo.write("set ylabel ejeylabel font fulabel offset -3,0"+"\n")
+    archivo.write("splot arcizq u 1:2:4 # para graficar reflectancia se cambia el ultimo número por 3"+"\n")
+    archivo.write("reset # el dibujo a pintar, en density plot"+"\n")
+    archivo.write("\n")
+    archivo.write("################################################"+"\n")
+    archivo.write("#caracteristicas figura de la derecha"+"\n")
+    archivo.write("##############################################"+"\n")
+    archivo.write("set palette defined (0 'black',1 'white') #gray"+"\n")
+    archivo.write("set cbrange [0 : 1]"+"\n")
+    archivo.write("set pm3d interpolate 0,0 map"+"\n")
+    archivo.write("set size tam,2*tam"+"\n")
+    archivo.write("set origin 0.405,0."+"\n")
+    archivo.write("unset key"+"\n")
+    archivo.write("set xrange[xmin:xmax]"+"\n")
+    archivo.write("set tics scale scatics font fuejes"+"\n")
+    archivo.write("set xtics septicx nomirror out font fuejes"+"\n")
+    archivo.write("set mxtics mtx"+"\n")
+    archivo.write("set yrange[ymin:ymax]"+"\n")
+    archivo.write("set noytics"+"\n")
+    archivo.write("set title titder font fuente"+"\n")
+    archivo.write("set xlabel ejexlabel font fulabel"+"\n")
+    archivo.write("splot arcder u 1:2:4"+"\n")
+    archivo.write("reset"+"\n")
+    archivo.write("\n")
+    archivo.write("unset multiplot # se debe finalizar el metodo que permite pintar muchas figuras"+"\n")
+
+
+def creararchivo(parametros,ventanaes):
     archivo=open("CTETMF.esf","w")
     for p in range(0,len(parametros)):
         if p < 6:
@@ -409,7 +490,78 @@ def creararchivo(parametros):
             for h in parametros[p]:
                 archivo.write(str(h)+"\n")
     archivo.close()
+    ventanaes.destroy()
+    ventanaSimulacion()
+    os.system("TE")
+    os.system("TM")
+    fi_ff = str(parametros[1] +","+ parametros[2])
+    gnu_plot_TETMvsAng(parametros[0],parametros[1],fi_ff)
 
+def ventanaSimulacion():
+    # creacion de la ventana - simulación en proceso modo TE
+    ventanaprocesote = tk.Toplevel(ventana)
+    anchoVentana = 400
+    altoVentana = 250
+    ventanaprocesote.title("Sistema fotónico 1D")
+    ventanaprocesote.iconbitmap("isotipo.ico")
+    ventanaprocesote.configure(bg='white')
+    # redimensionar nuestra ventana
+
+    x_ventana = ventanaprocesote.winfo_screenwidth() // 2 - anchoVentana // 2
+    y_ventana = ventanaprocesote.winfo_screenheight() // 2 - altoVentana // 2
+    posicion = str(anchoVentana) + "x" + str(altoVentana) + "+" + str(x_ventana) + "+" + str(y_ventana)
+    ventanaprocesote.geometry(posicion)
+    ventanaprocesote.resizable(False, False)
+
+    titleMenu = tk.Label(ventanaprocesote, text = "Simulación en proceso", font="Calibri 18 bold", foreground="white", background="#08469B")
+
+    #Creación de Labels 
+
+    titulomodoTE = tk.Label(ventanaprocesote, text="Calculando modo TE y TM ...", font="Calibri 18 bold", foreground="#08469B", background="white", anchor="center")
+    #titulomodoTM = tk.Label(framemodoTM, text="Programa de cálculo modo TM", font="Calibri 18 bold", foreground="#08469B", background="white", anchor="center")
+
+    avancemodoTE = tk.Label(ventanaprocesote, text="0%", font="Calibri 12 bold", foreground="#08469B", background="white", anchor="center")
+    #avancemodoTM = tk.Label(framemodoTM, text="25%", font="Calibri 12 bold", foreground="#08469B", background="white", anchor="center")
+
+    #Posicionamiento en pantalla de los elementos
+    titleMenu.place(x=0, y=0, width=400, height=50)
+
+    titulomodoTE.place(x=15, y=80, width=370)
+    #titulomodoTM.place(x=10, y=10, width=370)
+
+    avancemodoTE.place(x=180, y=165)
+    button = tkinter.Button(ventanaprocesote, text = "Aceptar", font="Calibri 12 bold", foreground="black", background="#B7C800",  command=start, cursor="hand2", width=8, height=1,relief="flat", bd=1)
+    button.place(x=160, y=190)
+    #avancemodoTM.place(x=180, y=170)
+
+
+    #labelAnchoCapa = tk.Label(myframe, text="Ancho de la capa", font="Calibri 12", foreground="#08469B", background="white" )
+    #anchoCapa = tkinter.Entry(myframe, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
+
+
+    s = Style()
+    s.configure("TCombobox", selectBackground='green')
+    s.theme_use('alt')
+    s.configure("TProgressbar", thickness=7, troughcolor='#a2c4c9',
+        background='#b7c800', bordercolor="#a2c4c9", relief="flat", bd=1)
+
+    progress_gg = Progressbar(ventanaprocesote, orient=HORIZONTAL, style="TProgressbar",length=300)
+    progress_gg.place(x=50, y=150)
+    piepagina = tk.Label(ventanaprocesote, background="#F5841F")
+    piepagina.place(x=0, y = 230, width=500, height=20)
+    
+    x = 0
+    while(x < 100):
+        archivo=open("progreso.dat")
+        lineas = archivo.readlines()
+        totalSimulacion = "".join(lineas).strip()
+        progress_gg["value"]+=int(totalSimulacion)
+        x=int(totalSimulacion)
+        ventanaprocesote.update_idletasks()
+    titulomodoTE["text"] = "Simulacion finalizada con exito!"
+    avancemodoTE["text"] = "100%"
+    
+    
 
 
 def ventanaParametros(parametros,menuprincipal):
@@ -546,7 +698,7 @@ def ventanaParametros(parametros,menuprincipal):
     pregunta.pack()
     Labelbotones = tk.LabelFrame(frameCapas, background="white", width=500, height=30, highlightbackground="white", highlightcolor="white", highlightthickness=2, relief="flat", bd=1)
     Labelbotones.pack()
-    buttonSi = tk.Button(Labelbotones, text = "Si", font="Calibri 12 bold", background="#B7C800", cursor="hand2",relief="flat", bd=1,width=10,command= lambda: creararchivo(parametros))
+    buttonSi = tk.Button(Labelbotones, text = "Si", font="Calibri 12 bold", background="#B7C800", cursor="hand2",relief="flat", bd=1,width=10,command= lambda: creararchivo(parametros,ventanaes))
     buttonSi.pack(side=LEFT,padx=5)
     buttonNo = tk.Button(Labelbotones, text = "No", font="Calibri 12 bold", background="#B7C800", cursor="hand2",relief="flat", bd=1,width=10,command= lambda: volver(ventanaes,menuprincipal))
     buttonNo.pack(side=RIGHT,padx=5)

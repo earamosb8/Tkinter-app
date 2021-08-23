@@ -1,0 +1,9 @@
+all: TE TM
+TE: algTE.f modprob6.f modprob6.o
+	gfortran -o TE algTE.f modprob6.o
+
+TM: algTM.f modprob6.f modprob6.o
+	gfortran -o TM algTM.f modprob6.o
+
+modprob6.o: modprob6.f
+	gfortran -c modprob6.f
