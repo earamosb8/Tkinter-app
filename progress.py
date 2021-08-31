@@ -10,6 +10,8 @@ import re
 from tkinter import messagebox
 from tkinter import ttk
 import os
+from os import remove
+import threading
 
 # creacion de la ventana
 ventana =  Tk();
@@ -420,16 +422,16 @@ def gnu_plot_TETMvsAng(nombre,ran_fre,fi_ff):   # funcion para la escritura del 
     archivo.write("septicx=15 # separaci on ticks en x"+"\n")
     archivo.write("septicy=2 # separacion ticks en y"+"\n")
     archivo.write("scatics=0.5 # tamaño de los ticks en terminos del default que es 1"+"\n")
-    archivo.write("titizq='TE' # titulo de la figura izquierda"+"\n")
-    archivo.write("titder='TM' # titulo de la figura derecha"+"\n")
-    archivo.write("fuente='Times-New-Roman, 22' # titulo, tipo y tamaño de la fuente"+"\n")
-    archivo.write("ejexlabel='{Angle (°)}' # label del eje x"+"\n")
-    if ran_fre==1:
-       archivo.write("ejeylabel='Frequency (THz)' # label del eje y"+"\n")
-    elif ran_fre==2:
-       archivo.write("ejeylabel='Frequency (GHz)' # label del eje y"+"\n")
-    archivo.write("fulabel='Times-New-Roman, 20' # label tipo y tamaño de la fuente"+"\n")
-    archivo.write("fuejes='Times-New-Roman, 18' # fuente de los ejes y el tamaño"+"\n")
+    archivo.write("titizq='TE' # titulo de la figura izquierda"+"\n")##
+    archivo.write("titder='TM' # titulo de la figura derecha"+"\n")##
+    archivo.write("fuente='Times-New-Roman, 22' # titulo, tipo y tamaño de la fuente"+"\n")##
+    archivo.write("ejexlabel='{Angle X}' # label del eje x"+"\n")##
+    if ran_fre=="1":
+       archivo.write("ejeylabel='Frequency (THz)' # label del eje y"+"\n")##
+    elif ran_fre=="2":
+       archivo.write("ejeylabel='Frequency (GHz)' # label del eje y"+"\n")##
+    archivo.write("fulabel='Times-New-Roman, 20' # label tipo y tamaño de la fuente"+"\n")##
+    archivo.write("fuejes='Times-New-Roman, 18' # fuente de los ejes y el tamaño"+"\n")##
     archivo.write("\n")
     archivo.write("set multiplot # ayuda a pintar muchas figuras en una sola, deben especificarse todas las caracteristicas de cada figura"+"\n")
     archivo.write("\n")
@@ -482,6 +484,12 @@ def gnu_plot_TETMvsAng(nombre,ran_fre,fi_ff):   # funcion para la escritura del 
 
 
 def creararchivo(parametros,ventanaes):
+    try:
+        remove("progresote.dat")
+        remove("progresotm.dat")
+    except:
+        pass
+    
     archivo=open("CTETMF.esf","w")
     for p in range(0,len(parametros)):
         if p < 6:
@@ -491,48 +499,53 @@ def creararchivo(parametros,ventanaes):
                 archivo.write(str(h)+"\n")
     archivo.close()
     ventanaes.destroy()
+   
     ventanaSimulacion()
-    os.system("TE")
-    os.system("TM")
+    
+    
     fi_ff = str(parametros[1] +","+ parametros[2])
     gnu_plot_TETMvsAng(parametros[0],parametros[1],fi_ff)
 
 def ventanaSimulacion():
     # creacion de la ventana - simulación en proceso modo TE
-    ventanaprocesote = tk.Toplevel(ventana)
-    anchoVentana = 400
-    altoVentana = 250
-    ventanaprocesote.title("Sistema fotónico 1D")
-    ventanaprocesote.iconbitmap("isotipo.ico")
-    ventanaprocesote.configure(bg='white')
+    ventanaproceso = tk.Toplevel(ventana)
+    anchoVentana = 800
+    altoVentana = 400
+    ventanaproceso.title("Sistema fotónico 1D")
+    ventanaproceso.iconbitmap("isotipo.ico")
+    ventanaproceso.configure(bg='white')
+    
     # redimensionar nuestra ventana
 
-    x_ventana = ventanaprocesote.winfo_screenwidth() // 2 - anchoVentana // 2
-    y_ventana = ventanaprocesote.winfo_screenheight() // 2 - altoVentana // 2
+    x_ventana = ventanaproceso.winfo_screenwidth() // 2 - anchoVentana // 2
+    y_ventana = ventanaproceso.winfo_screenheight() // 2 - altoVentana // 2
     posicion = str(anchoVentana) + "x" + str(altoVentana) + "+" + str(x_ventana) + "+" + str(y_ventana)
-    ventanaprocesote.geometry(posicion)
-    ventanaprocesote.resizable(False, False)
+    ventanaproceso.geometry(posicion)
+    ventanaproceso.resizable(False, False)
 
-    titleMenu = tk.Label(ventanaprocesote, text = "Simulación en proceso", font="Calibri 18 bold", foreground="white", background="#08469B")
+    titleMenu = tk.Label(ventanaproceso, text = "Simulación en proceso", font="Calibri 18 bold", foreground="white", background="#08469B")
 
-    #Creación de Labels 
+    #Creación de Labels Frame
+    framemodoTE = tk.LabelFrame(ventanaproceso, background="white")
+    framemodoTM = tk.LabelFrame(ventanaproceso, background="white")
 
-    titulomodoTE = tk.Label(ventanaprocesote, text="Calculando modo TE y TM ...", font="Calibri 18 bold", foreground="#08469B", background="white", anchor="center")
-    #titulomodoTM = tk.Label(framemodoTM, text="Programa de cálculo modo TM", font="Calibri 18 bold", foreground="#08469B", background="white", anchor="center")
+    titulomodoTE = tk.Label(framemodoTE, text="Programa de cálculo modo TE", font="Calibri 16 bold", foreground="#08469B", background="white", anchor="center")
+    titulomodoTM = tk.Label(framemodoTM, text="Programa de cálculo modo TM", font="Calibri 16 bold", foreground="#08469B", background="white", anchor="center")
 
-    avancemodoTE = tk.Label(ventanaprocesote, text="0%", font="Calibri 12 bold", foreground="#08469B", background="white", anchor="center")
-    #avancemodoTM = tk.Label(framemodoTM, text="25%", font="Calibri 12 bold", foreground="#08469B", background="white", anchor="center")
+    avancemodoTE = tk.Label(framemodoTE, text="0%", font="Calibri 12 bold", foreground="#08469B", background="white", anchor="center")
+    avancemodoTM = tk.Label(framemodoTM, text="0%", font="Calibri 12 bold", foreground="#08469B", background="white", anchor="center")
 
     #Posicionamiento en pantalla de los elementos
-    titleMenu.place(x=0, y=0, width=400, height=50)
+    titleMenu.place(x=0, y=0, width=830, height=50)
+    framemodoTE.place(x=10, y=55, width=400, height=200)
+    framemodoTM.place(x=420, y=55, width=400, height=200)
 
-    titulomodoTE.place(x=15, y=80, width=370)
-    #titulomodoTM.place(x=10, y=10, width=370)
+    titulomodoTE.place(x=10, y=20, width=370)
+    titulomodoTM.place(x=10, y=20, width=370)
 
-    avancemodoTE.place(x=180, y=165)
-    button = tkinter.Button(ventanaprocesote, text = "Aceptar", font="Calibri 12 bold", foreground="black", background="#B7C800",  command=start, cursor="hand2", width=8, height=1,relief="flat", bd=1)
-    button.place(x=160, y=190)
-    #avancemodoTM.place(x=180, y=170)
+    avancemodoTE.place(x=180, y=105)
+    avancemodoTM.place(x=180, y=105)
+    
 
 
     #labelAnchoCapa = tk.Label(myframe, text="Ancho de la capa", font="Calibri 12", foreground="#08469B", background="white" )
@@ -545,21 +558,45 @@ def ventanaSimulacion():
     s.configure("TProgressbar", thickness=7, troughcolor='#a2c4c9',
         background='#b7c800', bordercolor="#a2c4c9", relief="flat", bd=1)
 
-    progress_gg = Progressbar(ventanaprocesote, orient=HORIZONTAL, style="TProgressbar",length=300)
-    progress_gg.place(x=50, y=150)
-    piepagina = tk.Label(ventanaprocesote, background="#F5841F")
-    piepagina.place(x=0, y = 230, width=500, height=20)
-    
+    progress_ggte = Progressbar(framemodoTE, orient=HORIZONTAL, style="TProgressbar",length=200)
+    progress_ggte.place(x=95, y=80,height=20)
+
+    progress_ggtm = Progressbar(framemodoTM, orient=HORIZONTAL, style="TProgressbar",length=200)
+    progress_ggtm.place(x=95, y=80,height=20)
+    piepagina = tk.Label(ventanaproceso, background="#F5841F")
+    piepagina.place(x=0, y = 260, width=830, height=20)
+   
     x = 0
     while(x < 100):
-        archivo=open("progreso.dat")
+        os.system("TE")
+        archivo=open("progresote.dat")
         lineas = archivo.readlines()
         totalSimulacion = "".join(lineas).strip()
-        progress_gg["value"]+=int(totalSimulacion)
+        print(totalSimulacion)
+        progress_ggte["value"]=int(totalSimulacion)
+        avancemodoTE["text"] = str(totalSimulacion + "%")
         x=int(totalSimulacion)
-        ventanaprocesote.update_idletasks()
-    titulomodoTE["text"] = "Simulacion finalizada con exito!"
-    avancemodoTE["text"] = "100%"
+        ventanaproceso.update_idletasks()
+    
+    y = 0
+    
+    while(y < 100):
+        os.system("TM")
+        archivo=open("progresotm.dat")
+        lineas = archivo.readlines()
+        totalSimulacion = "".join(lineas).strip()
+        print(totalSimulacion)
+        progress_ggtm["value"]=int(totalSimulacion)
+        avancemodoTM["text"] = str(totalSimulacion + "%")
+        y=int(totalSimulacion)
+        ventanaproceso.update_idletasks()
+    
+    
+    
+    
+    
+    
+
     
     
 
