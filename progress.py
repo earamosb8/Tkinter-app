@@ -18,7 +18,7 @@ ventana =  Tk();
 anchoVentana = 500
 altoVentana = 450
 ventana.title("Sistema fotónico 1D")
-ventana.iconbitmap("isotipo.ico")
+ventana.iconbitmap("./img/isotipo.ico")
 ventana.configure(bg='white')
 
 x_ventana = ventana.winfo_screenwidth() // 2 - anchoVentana // 2
@@ -69,19 +69,19 @@ def createNewWindow():
     y_ventana = ventana.winfo_screenheight() // 2 - altoVentana // 2
     posicion = str(anchoVentana) + "x" + str(altoVentana) + "+" + str(x_ventana) + "+" + str(y_ventana)
     menuprincipal.geometry(posicion)
-    menuprincipal.iconbitmap("isotipo.ico")
+    menuprincipal.iconbitmap("./img/isotipo.ico")
     menuprincipal.configure(bg='white')
     menuprincipal.resizable(False, False)
     frameGenerales = tk.LabelFrame(menuprincipal, background="white",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
     frameCapas = tk.LabelFrame(menuprincipal, background="white",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
     titleMenu = tk.Label(menuprincipal, text = "Parámetros", font="Calibri 18 bold", foreground="white", background="#08469B")
     #titleMenu.config(font=("font="Calibri bold"", 18))
-    subtitlenombreA = tk.Label(frameGenerales, text="Datos del archivo", font="Calibri 18 bold", foreground="#08469B", background="white")
-    nombreArchivo = tk.Label(frameGenerales, text="Nombre del archivo", font="Calibri 12", foreground="#08469B", background="white" )
+    subtitlenombreA = tk.Label(frameGenerales, text="Datos de la simulación", font="Calibri 18 bold", foreground="#08469B", background="white")
+    nombreArchivo = tk.Label(frameGenerales, text="Nombre del proyecto", font="Calibri 12", foreground="#08469B", background="white" )
     cajanombreArchivo = tkinter.Entry(frameGenerales, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
     entrys.append(cajanombreArchivo)
-    ubicacionArchivo = tk.Label(frameGenerales, text="Ubicación del archivo", font="Calibri 12", foreground="#08469B", background="white" )
-    cajaubicacionArchivo = tk.Label(frameGenerales, text="Documentos\Fotosim1D\Output", font="Calibri 12", foreground="black", background="white" )
+    ubicacionArchivo = tk.Label(frameGenerales, text="Ubicación del proyecto", font="Calibri 12", foreground="#08469B", background="white" )
+    cajaubicacionArchivo = tk.Label(frameGenerales, text="Tkinter-app\Output", font="Calibri 12", foreground="black", background="white" )
     subtitlegenerales= tk.Label(frameGenerales, text="Generales", font="Calibri 18 bold", foreground="#08469B", background="white")
 
     titleCapas = tk.Label(frameCapas, text = "Capas", font="Calibri 18 bold", foreground="#08469B", background="white")
@@ -135,7 +135,7 @@ def createNewWindow():
     nombreArchivo.place(x=10, y=60)
     cajanombreArchivo.place(x=170, y=60, width=215)
     ubicacionArchivo.place(x=10, y=100)
-    cajaubicacionArchivo.place(x=165, y=100, width=215)
+    cajaubicacionArchivo.place(x=170, y=100)
 
     #Parametros Generales
     subtitlegenerales.place(x=10, y=140)
@@ -457,7 +457,7 @@ def gnu_plot_TETMvsAng(nombre,ran_fre,fi_ff):   # funcion para la escritura del 
     archivo.write("set title titizq font fuente # coloca el titulo de la figura con su fuente"+"\n")
     archivo.write("set xlabel ejexlabel font fulabel # el titulo del eje x tipo de letra y el tamaño del texto"+"\n")
     archivo.write("set ylabel ejeylabel font fulabel offset -3,0"+"\n")
-    archivo.write("splot arcizq u 1:2:4 # para graficar reflectancia se cambia el ultimo número por 3"+"\n")
+    archivo.write("splot arcizq u 1:2:4 # para graficar reflectancia se cambia el ultimo número por 3"+"\n")#cambiar ultimo numero
     archivo.write("reset # el dibujo a pintar, en density plot"+"\n")
     archivo.write("\n")
     archivo.write("################################################"+"\n")
@@ -477,7 +477,7 @@ def gnu_plot_TETMvsAng(nombre,ran_fre,fi_ff):   # funcion para la escritura del 
     archivo.write("set noytics"+"\n")
     archivo.write("set title titder font fuente"+"\n")
     archivo.write("set xlabel ejexlabel font fulabel"+"\n")
-    archivo.write("splot arcder u 1:2:4"+"\n")
+    archivo.write("splot arcder u 1:2:4"+"\n")#cambiar ultimo numero
     archivo.write("reset"+"\n")
     archivo.write("\n")
     archivo.write("unset multiplot # se debe finalizar el metodo que permite pintar muchas figuras"+"\n")
@@ -509,14 +509,16 @@ def creararchivo(parametros,ventanaes):
 def ventanaSimulacion():
     # creacion de la ventana - simulación en proceso modo TE
     ventanaproceso = tk.Toplevel(ventana)
-    anchoVentana = 800
-    altoVentana = 400
+    ventanaproceso.attributes('-disabled', True)
+    anchoVentana = 830
+    altoVentana = 280
     ventanaproceso.title("Sistema fotónico 1D")
-    ventanaproceso.iconbitmap("isotipo.ico")
+    ventanaproceso.iconbitmap("./img/isotipo.ico")
     ventanaproceso.configure(bg='white')
-    
+    def closeProgram():
+        ventana.destroy()
     # redimensionar nuestra ventana
-
+    ventanaproceso.protocol('WM_DELETE_WINDOW', closeProgram)
     x_ventana = ventanaproceso.winfo_screenwidth() // 2 - anchoVentana // 2
     y_ventana = ventanaproceso.winfo_screenheight() // 2 - altoVentana // 2
     posicion = str(anchoVentana) + "x" + str(altoVentana) + "+" + str(x_ventana) + "+" + str(y_ventana)
@@ -590,6 +592,7 @@ def ventanaSimulacion():
         avancemodoTM["text"] = str(totalSimulacion + "%")
         y=int(totalSimulacion)
         ventanaproceso.update_idletasks()
+        ventanaproceso.attributes('-disabled', False)
     
     
     
@@ -604,7 +607,7 @@ def ventanaSimulacion():
 def ventanaParametros(parametros,menuprincipal):
     ventanaes = tk.Toplevel(ventana)
     ventanaes.title("Sistema fotónico 1D")
-    ventanaes.iconbitmap("isotipo.ico")
+    ventanaes.iconbitmap("./img/isotipo.ico")
     ventanaes.configure(bg='white')
     ventanaes.resizable(False, False)
     ventanaes.protocol('WM_DELETE_WINDOW', closeProgram)
@@ -899,7 +902,7 @@ s.configure("TProgressbar", thickness=7, troughcolor='#a2c4c9',
     #lightcolor="#a2c4c9" )
 # redimensionar nuestra ventana
 
-imagen = PhotoImage(file="logo.png")
+imagen = PhotoImage(file="./img/logo.png")
 etiqueta = Label(ventana,image=imagen, background="white")
 
 titulo = tk.Label(ventana, text="Bienvenido al programa de cálculo de las"

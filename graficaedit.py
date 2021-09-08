@@ -8,13 +8,19 @@ import tkinter.font as font
 import re
 from tkinter import messagebox
 from tkinter import ttk
+from tkinter import Canvas
+
+
+
+
+
 
 
 venteditgrafica =  Tk();
 anchoVentana = 830
 altoVentana = 550
 venteditgrafica.title("Sistema fotónico 1D")
-venteditgrafica.iconbitmap("isotipo.ico")
+venteditgrafica.iconbitmap("./img/isotipo.ico")
 venteditgrafica.configure(bg='white')
 
 x_ventana = venteditgrafica.winfo_screenwidth() // 2 - anchoVentana // 2
@@ -26,25 +32,40 @@ venteditgrafica.resizable(False, False)
 titleedit= tk.Label(venteditgrafica, text = "Personalización de Gráfica", font="Calibri 18 bold", foreground="white", background="#08469B")
 
 #Creación de Labels y LabelFrame
-labelgenerales = tk.Label(venteditgrafica, text="Generales", font="Calibri 18 bold", foreground="#08469B", background="white")
-labeltitulosgrafica = tk.Label(venteditgrafica, text="Títulos", font="Calibri 12 bold", foreground="#08469B", background="white")
-labelfuente = tk.Label(venteditgrafica, text="Fuente:", font="Calibri 14 bold", foreground="#08469B", background="white")
-labeltamanoTitulos = tk.Label(venteditgrafica, text="Tamaño de titulos:", font="Calibri 14 bold", foreground="#08469B", background="white")
-labeltamanoSubtitulos = tk.Label(venteditgrafica, text="Tamaño de subtitulos:", font="Calibri 14 bold", foreground="#08469B", background="white")
-labeltamanoNumeros = tk.Label(venteditgrafica, text="Tamaño de numeros:", font="Calibri 14 bold", foreground="#08469B", background="white")
+labeltitulosgrafica = tk.Label(venteditgrafica, text="Títulos", font="Calibri 14 bold", foreground="#08469B", background="white")
+labelfuente = tk.Label(venteditgrafica, text="Fuente:", font="Calibri 15 bold", foreground="#08469B", background="white")
+labeltamanoTitulos = tk.Label(venteditgrafica, text="Tamaño de titulos:", font="Calibri 15 bold", foreground="#08469B", background="white")
+labeltamanoSubtitulos = tk.Label(venteditgrafica, text="Tamaño de subtitulos:", font="Calibri 16 bold", foreground="#08469B", background="white")
+labeltamanoNumeros = tk.Label(venteditgrafica, text="Tamaño de numeros:", font="Calibri 15 bold", foreground="#08469B", background="white")
+labeltipoDiagrama = tk.Label(venteditgrafica, text="Tipo de diagrama:", font="Calibri 15 bold", foreground="#08469B", background="white")
+labelbarraCalor = tk.Label(venteditgrafica, text="Colores barra de calor:", font="Calibri 15 bold", foreground="#08469B", background="white")
+
 buttonguardaredit= tkinter.Button(venteditgrafica, text = "Guardar", cursor="hand2", width=8, height=1,relief="flat", bd=1, font="Calibri 12 bold", foreground="black", background="#B7C800")
 framenamearchivo = tk.LabelFrame(venteditgrafica, background="white", highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
 
 framegrafica = tk.LabelFrame(framenamearchivo, background="white", highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
-imagen = PhotoImage(file="cuadro.PNG")
+imagen = PhotoImage(file="./img/cuadro.PNG")
 modostitulo = tk.LabelFrame(framegrafica,background="white",highlightcolor="white")
 modostitulo.grid(row=0, column=1)
 titulofrecuencia = tkinter.Canvas(framegrafica, width = 30, height = 250,background="white",highlightbackground="white")
 idtext = titulofrecuencia.create_text(15, 230, text = "Frecuencia(GHz)", angle = 90, anchor = "w",font=("Times New Roman",22))
 
 titulofrecuencia.grid(row=1, column=0)
-barracolores=tk.LabelFrame(framegrafica,background="red",width= 10, height = 250)
+barracolores= tk.LabelFrame(framegrafica,background="white",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,bd=1,width= 10, height = 250)
+                                                    
+segmentos = tk.LabelFrame(barracolores,background="#FAF9F6",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,width= 10, height = 50)
+segmentos.pack()
+segmentos = tk.LabelFrame(barracolores,background="#D5D4D1",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,width= 10, height = 50)
+segmentos.pack()
+segmentos = tk.LabelFrame(barracolores,background="#ABABA9",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,width= 10, height = 50)
+segmentos.pack()
+segmentos = tk.LabelFrame(barracolores,background="#80807F",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,width= 10, height = 50)
+segmentos.pack()
+segmentos = tk.LabelFrame(barracolores,background="#000000",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,width= 10, height = 50)
+segmentos.pack()
+
 barracolores.grid(row=1, column=3)
+
 escalanumeros= tk.Label(framegrafica,text="1\n0.8\n0.6\n0.4\n0.2\n0",background="white")
 escalanumeros.config(font=("Times New Roman",2))
 escalanumeros.grid(row=1, column=4)
@@ -75,11 +96,16 @@ angle2.grid(row=0,column=3)
 labelarchivonombre = tk.Label(framenamearchivo, text="prueba.plt", font="Arial 18 bold", foreground="#08469B", background="white")
 tipo = ["Arial","Calibri","Times New Roman"]
 tamf = [" 8 "," 10 "," 12 "," 14 "," 16 "," 18 "," 20 "," 22 "," 24 "]
+colores = ["white","red","blue","magenta","green","yellow","cyan","white","orange"]
+tipd = ["Trasmitancia","Reflectancia"]
 tamanoSub = 18
 tamanoTitulos = 20
 tamanoNumeros = 18
+tipoDiagrama = ""
+colorSelected=""
+colorSelected2=""
 clicked=[]
-clicked=[StringVar(),StringVar(),StringVar(),StringVar()]
+clicked=[StringVar(),StringVar(),StringVar(),StringVar(),StringVar(),StringVar(),StringVar()]
 
 
 
@@ -111,6 +137,24 @@ def validartamano(event,seccion):
         tamanoNumeros = clicked[3].get()
         escalanumeros.config(font=(clicked[3].get(),tamanoNumeros))
         escalanumeros2.config(font=(clicked[3].get(),tamanoNumeros))
+    if seccion == "tipodiagrama":
+        global tipoDiagrama
+        if clicked[4].get() == "Trasmitancia":
+            tipoDiagrama = "4"
+        if clicked[4].get() == "Reflectancia":
+            tipoDiagrama = "3"
+    if seccion == "colores":
+        global colorSelected
+        colorSelected = clicked[5].get()
+        opcionColor.config(bg=clicked[5].get(),activebackground=clicked[5].get())
+        print(colorSelected)
+    if seccion == "colores2":
+        global colorSelected2
+        colorSelected2 = clicked[6].get()
+        opcionColor2.config(bg=clicked[6].get(),activebackground=clicked[6].get())
+        print(colorSelected2)
+        
+        
         
 
 fuente = tk.OptionMenu(venteditgrafica, clicked[0], *tipo, command=validar)
@@ -122,6 +166,16 @@ opcionTamanoSubtitulo = tk.OptionMenu(venteditgrafica, clicked[2], *tamf,command
 opcionTamanoSubtitulo['menu'].invoke(tamf[5])
 opcionTamanoNumeros = tk.OptionMenu(venteditgrafica, clicked[3], *tamf,command=lambda event,seccion="numeros":validartamano(event,seccion))
 opcionTamanoNumeros['menu'].invoke(tamf[5])
+opcionTipoDiagrama = tk.OptionMenu(venteditgrafica, clicked[4], *tipd,command=lambda event,seccion="tipodiagrama":validartamano(event,seccion))
+opcionTipoDiagrama['menu'].invoke(tipd[0])
+opcionColor = tk.OptionMenu(venteditgrafica, clicked[5], *colores,command=lambda event,seccion="colores":validartamano(event,seccion))
+opcionColor.config(bg=colores[0],activebackground=opcionColor.cget('bg'))
+opcionColor['menu'].invoke(colores[0])
+opcionColor2 = tk.OptionMenu(venteditgrafica, clicked[6], *colores,command=lambda event,seccion="colores2":validartamano(event,seccion))
+opcionColor2.config(bg=colores[0],activebackground=opcionColor.cget('bg'))
+opcionColor2['menu'].invoke(colores[0])
+
+
 
 
 
@@ -129,22 +183,25 @@ opcionTamanoNumeros['menu'].invoke(tamf[5])
 
 #Posicionamiento en pantalla de los elementos
 titleedit.place(x=0, y=0, width=830, height=50)
-labelgenerales.place(x=20, y=68)
-labelfuente.place(x=20, y=110)
+labelfuente.place(x=14, y=60)
 #labeltitulosgrafica.place(x=20, y=145)
 framenamearchivo.place(x=210, y=58, width=600, height=500)
 labelarchivonombre.pack()
 framegrafica.pack(expand=True, fill=tk.BOTH)
 
 
-fuente.place(x=20, y = 145,width=150, height=30)
-labeltamanoTitulos.place(x=20, y = 180)
-opcionTamanoTitulo.place(x=20, y=215)
-labeltamanoSubtitulos.place(x=20, y=250)
-opcionTamanoSubtitulo.place(x=20, y=285)
-labeltamanoNumeros.place(x=20, y=320)
-opcionTamanoNumeros.place(x=20, y=355)
-
+fuente.place(x=14, y = 90,width=150, height=30)
+labeltamanoTitulos.place(x=14, y = 130)
+opcionTamanoTitulo.place(x=14, y=160)
+labeltamanoSubtitulos.place(x=14, y=200)
+opcionTamanoSubtitulo.place(x=14, y=230)
+labeltamanoNumeros.place(x=14, y=270)
+opcionTamanoNumeros.place(x=14, y=300)
+labeltipoDiagrama.place(x=14, y=340)
+opcionTipoDiagrama.place(x=14, y=370)
+labelbarraCalor.place(x=14, y=410)
+opcionColor.place(x=14,y=440)
+opcionColor2.place(x=90,y=440)
 buttonguardaredit.place(x=68, y = 477, width=80, height=30)
     
 piepagina = tk.Label(venteditgrafica, background="#F5841F")
