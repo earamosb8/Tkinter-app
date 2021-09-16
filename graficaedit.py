@@ -17,7 +17,7 @@ from tkinter import Canvas
 
 
 venteditgrafica =  Tk();
-anchoVentana = 830
+anchoVentana = 900
 altoVentana = 550
 venteditgrafica.title("Sistema fotónico 1D")
 venteditgrafica.iconbitmap("./img/isotipo.ico")
@@ -43,26 +43,30 @@ labelbarraCalor = tk.Label(venteditgrafica, text="Colores barra de calor:", font
 buttonguardaredit= tkinter.Button(venteditgrafica, text = "Guardar", cursor="hand2", width=8, height=1,relief="flat", bd=1, font="Calibri 12 bold", foreground="black", background="#B7C800")
 framenamearchivo = tk.LabelFrame(venteditgrafica, background="white", highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
 
-framegrafica = tk.LabelFrame(framenamearchivo, background="white", highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
+framegrafica = tk.LabelFrame(framenamearchivo, background="white", highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1,width=700)
 imagen = PhotoImage(file="./img/cuadro.PNG")
 modostitulo = tk.LabelFrame(framegrafica,background="white",highlightcolor="white")
 modostitulo.grid(row=0, column=1)
-titulofrecuencia = tkinter.Canvas(framegrafica, width = 30, height = 250,background="white",highlightbackground="white")
-idtext = titulofrecuencia.create_text(15, 230, text = "Frecuencia(GHz)", angle = 90, anchor = "w",font=("Times New Roman",22))
+titulofrecuencia = tkinter.Canvas(framegrafica, width = 30, height = 252,background="white",highlightbackground="white")
+idtext = titulofrecuencia.create_text(18, 253, text = "Frecuencia(GHz)", angle = 90, anchor = "w",font=("Times New Roman",22))
 
 titulofrecuencia.grid(row=1, column=0)
 barracolores= tk.LabelFrame(framegrafica,background="white",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,bd=1,width= 10, height = 250)
                                                     
-segmentos = tk.LabelFrame(barracolores,background="#FAF9F6",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,width= 10, height = 50)
-segmentos.pack()
-segmentos = tk.LabelFrame(barracolores,background="#D5D4D1",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,width= 10, height = 50)
-segmentos.pack()
-segmentos = tk.LabelFrame(barracolores,background="#ABABA9",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,width= 10, height = 50)
-segmentos.pack()
-segmentos = tk.LabelFrame(barracolores,background="#80807F",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,width= 10, height = 50)
-segmentos.pack()
-segmentos = tk.LabelFrame(barracolores,background="#000000",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,width= 10, height = 50)
-segmentos.pack()
+segmentosInicial = tk.LabelFrame(barracolores,background="#FAF9F6",relief="flat",bd=0,width= 10, height = 50)
+segmentosInicial.pack()
+segmentos2 = tk.LabelFrame(barracolores,background="#D5D4D1",relief="flat",bd=0,width= 10, height = 50)
+segmentos2.pack()
+segmentos3 = tk.LabelFrame(barracolores,relief="flat", height = 50,bd=0)
+segmentosaux1 = tk.LabelFrame(segmentos3, width=10, height = 25,bd=0)
+segmentosaux2 = tk.LabelFrame(segmentos3,width=10, height = 25,bd=0)
+segmentosaux1.pack()
+segmentosaux2.pack()
+segmentos3.pack()
+segmentos4 = tk.LabelFrame(barracolores,background="#80807F",relief="flat",bd=0,width= 10, height = 50)
+segmentos4.pack()
+segmentosFinal = tk.LabelFrame(barracolores,background="#000000",relief="flat",bd=0,width= 10, height = 50)
+segmentosFinal.pack()
 
 barracolores.grid(row=1, column=3)
 
@@ -96,7 +100,8 @@ angle2.grid(row=0,column=3)
 labelarchivonombre = tk.Label(framenamearchivo, text="prueba.plt", font="Arial 18 bold", foreground="#08469B", background="white")
 tipo = ["Arial","Calibri","Times New Roman"]
 tamf = [" 8 "," 10 "," 12 "," 14 "," 16 "," 18 "," 20 "," 22 "," 24 "]
-colores = ["white","red","blue","magenta","green","yellow","cyan","white","orange"]
+colores = {"white":"FFFFFF","red":"FF0000","blue":"0000FF","magenta":"FF00FF","green":"088A08","yellow":"FFFF00","cyan":"00FFFF","orange":"FF8000","gray":"848484"}
+coloresauxiliares = [["#FAFAFA","#F2F2F2"],["#FA5858","#F5A9A9"],["#5858FA","#A9A9F5"],["#FA58F4","#F5A9F2"],["#01DF01","#2EFE2E"],["#F4FA58","#F2F5A9"],["#58FAF4","#A9F5F2"],["#FAAC58","#F5D0A9"],["#BDBDBD","#E6E6E6"]]
 tipd = ["Trasmitancia","Reflectancia"]
 tamanoSub = 18
 tamanoTitulos = 20
@@ -106,7 +111,8 @@ colorSelected=""
 colorSelected2=""
 clicked=[]
 clicked=[StringVar(),StringVar(),StringVar(),StringVar(),StringVar(),StringVar(),StringVar()]
-
+claves = list(colores.keys())
+valores = list(colores.values())
 
 
 
@@ -147,16 +153,27 @@ def validartamano(event,seccion):
         global colorSelected
         colorSelected = clicked[5].get()
         opcionColor.config(bg=clicked[5].get(),activebackground=clicked[5].get())
-        print(colorSelected)
+        segmentosInicial.config(bg=clicked[5].get())
+        indice=claves.index(clicked[5].get())
+        segmentos2.config(bg=coloresauxiliares[indice][0])
+        segmentosaux1.config(bg=coloresauxiliares[indice][1])
+
     if seccion == "colores2":
         global colorSelected2
         colorSelected2 = clicked[6].get()
         opcionColor2.config(bg=clicked[6].get(),activebackground=clicked[6].get())
-        print(colorSelected2)
+        indice=claves.index(clicked[6].get())
+        segmentosFinal.config(bg=clicked[6].get())
+        #print(valores[indice])
+        segmentos4.config(bg=coloresauxiliares[indice][0])
+        segmentosaux2.config(bg=coloresauxiliares[indice][1])
+        #print(claves.index(clicked[6].get()))
         
         
         
-
+claves = list(colores.keys())
+valores = list(colores.values())
+print(valores)
 fuente = tk.OptionMenu(venteditgrafica, clicked[0], *tipo, command=validar)
 fuente['menu'].invoke(tipo[0])
 
@@ -169,11 +186,12 @@ opcionTamanoNumeros['menu'].invoke(tamf[5])
 opcionTipoDiagrama = tk.OptionMenu(venteditgrafica, clicked[4], *tipd,command=lambda event,seccion="tipodiagrama":validartamano(event,seccion))
 opcionTipoDiagrama['menu'].invoke(tipd[0])
 opcionColor = tk.OptionMenu(venteditgrafica, clicked[5], *colores,command=lambda event,seccion="colores":validartamano(event,seccion))
-opcionColor.config(bg=colores[0],activebackground=opcionColor.cget('bg'))
-opcionColor['menu'].invoke(colores[0])
+opcionColor.config(bg=claves[0],activebackground=opcionColor.cget('bg'))
+opcionColor['menu'].invoke(claves[0])
 opcionColor2 = tk.OptionMenu(venteditgrafica, clicked[6], *colores,command=lambda event,seccion="colores2":validartamano(event,seccion))
-opcionColor2.config(bg=colores[0],activebackground=opcionColor.cget('bg'))
-opcionColor2['menu'].invoke(colores[0])
+opcionColor2.config(bg=claves[8],activebackground=opcionColor.cget('bg'))
+print(colores.get(9))
+opcionColor2['menu'].invoke(claves[8])
 
 
 
@@ -182,12 +200,12 @@ opcionColor2['menu'].invoke(colores[0])
 
 
 #Posicionamiento en pantalla de los elementos
-titleedit.place(x=0, y=0, width=830, height=50)
+titleedit.place(x=0, y=0, width=900, height=50)
 labelfuente.place(x=14, y=60)
 #labeltitulosgrafica.place(x=20, y=145)
-framenamearchivo.place(x=210, y=58, width=600, height=500)
+framenamearchivo.place(x=230, y=58, width=660, height=465)
 labelarchivonombre.pack()
-framegrafica.pack(expand=True, fill=tk.BOTH)
+framegrafica.pack()
 
 
 fuente.place(x=14, y = 90,width=150, height=30)
@@ -205,6 +223,6 @@ opcionColor2.place(x=90,y=440)
 buttonguardaredit.place(x=68, y = 477, width=80, height=30)
     
 piepagina = tk.Label(venteditgrafica, background="#F5841F")
-piepagina.place(x=0, y = 530, width=830, height=20)
+piepagina.place(x=0, y = 530, width=900, height=20)
     
 venteditgrafica.mainloop()
