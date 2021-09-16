@@ -11,7 +11,7 @@ from tkinter import messagebox
 from tkinter import ttk
 import os
 from os import remove
-import threading
+import shutil
 
 # creacion de la ventana
 ventana =  Tk();
@@ -481,6 +481,7 @@ def gnu_plot_TETMvsAng(nombre,ran_fre,fi_ff):   # funcion para la escritura del 
     archivo.write("reset"+"\n")
     archivo.write("\n")
     archivo.write("unset multiplot # se debe finalizar el metodo que permite pintar muchas figuras"+"\n")
+    
 
 
 def creararchivo(parametros,ventanaes):
@@ -500,13 +501,14 @@ def creararchivo(parametros,ventanaes):
     archivo.close()
     ventanaes.destroy()
    
-    ventanaSimulacion()
+    ventanaSimulacion(parametros[0])
     
     
     fi_ff = str(parametros[1] +","+ parametros[2])
     gnu_plot_TETMvsAng(parametros[0],parametros[1],fi_ff)
+    shutil.move(parametros[0]+'.plt', parametros[0]+'/'+parametros[0]+'.plt')
 
-def ventanaSimulacion():
+def ventanaSimulacion(nombre):
     # creacion de la ventana - simulación en proceso modo TE
     ventanaproceso = tk.Toplevel(ventana)
     ventanaproceso.attributes('-disabled', True)
@@ -593,6 +595,10 @@ def ventanaSimulacion():
         y=int(totalSimulacion)
         ventanaproceso.update_idletasks()
         ventanaproceso.attributes('-disabled', False)
+    
+    shutil.move(nombre+'-TE.dat', nombre+'/'+nombre+'-TE.dat')
+    shutil.move(nombre+'-TM.dat', nombre+'/'+nombre+'-TM.dat')
+    
     
     
     
