@@ -44,7 +44,7 @@ labels = []
 
 scroll = Style()
 scroll.configure('TScrollbar',background='blue')
-
+nombrecarpeta=""
 
 
 # Creacion de ventana principal
@@ -81,7 +81,24 @@ def createNewWindow():
     cajanombreArchivo = tkinter.Entry(frameGenerales, font = "Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
     entrys.append(cajanombreArchivo)
     ubicacionArchivo = tk.Label(frameGenerales, text="Ubicación del proyecto", font="Calibri 12", foreground="#08469B", background="white" )
-    cajaubicacionArchivo = tk.Label(frameGenerales, text="Tkinter-app\Output", font="Calibri 12", foreground="black", background="white" )
+    
+    def validarentry(event):
+        regex = [",",".","-","{","}","(",")","*","+",";",":","'","´","¿","?","<",">","/",'"',"&","="]
+        prueba = cajanombreArchivo.get()
+        if event.char in regex:
+            cajanombreArchivo.delete(0, tk.END)
+            cajanombreArchivo.insert(0,prueba[:-1])
+            
+        #cajanombreArchivo.delete(0, tk.END)
+        #cajanombreArchivo.insert(0,prueba.strip())
+        if(event.char != " "):
+            cajaubicacionArchivo["text"] ="Tkinter-app/" + prueba
+    cajanombreArchivo.bind("<KeyRelease>", validarentry)
+    
+        
+    
+    cajaubicacionArchivo = tk.Label(frameGenerales, text="Tkinter-app/", font="Calibri 12", foreground="black", background="white" )
+    
     subtitlegenerales= tk.Label(frameGenerales, text="Generales", font="Calibri 18 bold", foreground="#08469B", background="white")
 
     titleCapas = tk.Label(frameCapas, text = "Capas", font="Calibri 18 bold", foreground="#08469B", background="white")

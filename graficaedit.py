@@ -13,12 +13,9 @@ from tkinter import Canvas
 
 
 
-
-
-
 venteditgrafica =  Tk();
 anchoVentana = 900
-altoVentana = 550
+altoVentana = 620
 venteditgrafica.title("Sistema fotónico 1D")
 venteditgrafica.iconbitmap("./img/isotipo.ico")
 venteditgrafica.configure(bg='white')
@@ -38,18 +35,50 @@ labeltamanoTitulos = tk.Label(venteditgrafica, text="Tamaño de titulos:", font=
 labeltamanoSubtitulos = tk.Label(venteditgrafica, text="Tamaño de subtitulos:", font="Calibri 16 bold", foreground="#08469B", background="white")
 labeltamanoNumeros = tk.Label(venteditgrafica, text="Tamaño de numeros:", font="Calibri 15 bold", foreground="#08469B", background="white")
 labeltipoDiagrama = tk.Label(venteditgrafica, text="Tipo de diagrama:", font="Calibri 15 bold", foreground="#08469B", background="white")
+labelcambiarTitulos = tk.Label(venteditgrafica, text="Cambiar titulos:", font="Calibri 15 bold", foreground="#08469B", background="white")
+labelcambiarTitulosx = tk.Label(venteditgrafica, text="eje X:", font="Calibri 15 bold", foreground="#08469B", background="white")
+cajaX = tkinter.Entry(venteditgrafica, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2,relief="flat", bd=1,width=10)
+cajaX.bind("<KeyRelease>", lambda event: validarentry2(event,"etiqueta",cajaX,angle1))
+labelcambiarTitulosy = tk.Label(venteditgrafica, text="eje Y:", font="Calibri 15 bold", foreground="#08469B", background="white")
+cajaY = tkinter.Entry(venteditgrafica, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2,relief="flat", bd=1,width=10)
+cajaX2 = tkinter.Entry(venteditgrafica, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2,relief="flat", bd=1,width=10)  
+cajaX2.bind("<KeyRelease>", lambda event: validarentry2(event,"etiqueta",cajaX2,angle2))
+idtext = ""
+def validarentry2(event,elemento,caja,etiquetaopcional=None):
+    prueba = caja.get()
+    if elemento == "canvas":  
+        titulofrecuencia.delete('all')
+        global idtext
+        if prueba == "":
+            titulofrecuencia.delete('all')
+            idtext =titulofrecuencia.create_text(18, 253, text = str("Frecuencia" + " GHZ"), angle = 90, anchor = "w",font=(clicked[1].get(),tamanoSub))
+        else:
+            idtext =titulofrecuencia.create_text(18, 253, text = str(prueba + " GHZ"), angle = 90, anchor = "w",font=(clicked[1].get(),tamanoSub))
+    if elemento == "etiqueta":
+        if prueba == "":
+            etiquetaopcional["text"] = "Angle (y)"
+        else:
+         etiquetaopcional["text"] = prueba
+
+
+
+
+        
+        
+
 labelbarraCalor = tk.Label(venteditgrafica, text="Colores barra de calor:", font="Calibri 15 bold", foreground="#08469B", background="white")
 
+
 buttonguardaredit= tkinter.Button(venteditgrafica, text = "Guardar", cursor="hand2", width=8, height=1,relief="flat", bd=1, font="Calibri 12 bold", foreground="black", background="#B7C800")
-framenamearchivo = tk.LabelFrame(venteditgrafica, background="white", highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1)
+framenamearchivo = tk.LabelFrame(venteditgrafica, background="white", highlightbackground="white", highlightcolor="white", highlightthickness=2, relief="flat", bd=1)
 
 framegrafica = tk.LabelFrame(framenamearchivo, background="white", highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2, relief="flat", bd=1,width=700)
 imagen = PhotoImage(file="./img/cuadro.PNG")
-modostitulo = tk.LabelFrame(framegrafica,background="white",highlightcolor="white")
+modostitulo = tk.LabelFrame(framegrafica,background="white",highlightcolor="white",highlightbackground="white", highlightthickness=2,relief="flat")
 modostitulo.grid(row=0, column=1)
 titulofrecuencia = tkinter.Canvas(framegrafica, width = 30, height = 252,background="white",highlightbackground="white")
 idtext = titulofrecuencia.create_text(18, 253, text = "Frecuencia(GHz)", angle = 90, anchor = "w",font=("Times New Roman",22))
-
+cajaY.bind("<KeyRelease>", lambda event: validarentry2(event,"canvas",cajaY))
 titulofrecuencia.grid(row=1, column=0)
 barracolores= tk.LabelFrame(framegrafica,background="white",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,bd=1,width= 10, height = 250)
                                                     
@@ -86,7 +115,7 @@ etiqueta.grid(row=1,column=1)
 escalanumeros2= tk.Label(framegrafica,text="90 75 60 45 30 15 0 15 30 45 60 75 90",background="white")
 escalanumeros2.config(font=("Arial",18))
 escalanumeros2.grid(row=2, column=1)
-modostitulo2 = tk.LabelFrame(framegrafica, background="white",highlightbackground="white")
+modostitulo2 = tk.LabelFrame(framegrafica, background="white",highlightbackground="white", highlightcolor="white", highlightthickness=2,relief="flat")
 modostitulo2.grid(row=3, column=1)
 angle1 = Label(modostitulo2,text="Angle (y)",anchor=tk.CENTER,background="white")
 angle1.config(font=("Arial",22))
@@ -185,11 +214,12 @@ opcionTamanoNumeros = tk.OptionMenu(venteditgrafica, clicked[3], *tamf,command=l
 opcionTamanoNumeros['menu'].invoke(tamf[5])
 opcionTipoDiagrama = tk.OptionMenu(venteditgrafica, clicked[4], *tipd,command=lambda event,seccion="tipodiagrama":validartamano(event,seccion))
 opcionTipoDiagrama['menu'].invoke(tipd[0])
+
 opcionColor = tk.OptionMenu(venteditgrafica, clicked[5], *colores,command=lambda event,seccion="colores":validartamano(event,seccion))
-opcionColor.config(bg=claves[0],activebackground=opcionColor.cget('bg'))
+opcionColor.config(bg=claves[0],activebackground=opcionColor.cget('bg'),width=7)
 opcionColor['menu'].invoke(claves[0])
 opcionColor2 = tk.OptionMenu(venteditgrafica, clicked[6], *colores,command=lambda event,seccion="colores2":validartamano(event,seccion))
-opcionColor2.config(bg=claves[8],activebackground=opcionColor.cget('bg'))
+opcionColor2.config(bg=claves[8],activebackground=opcionColor.cget('bg'),width=7)
 print(colores.get(9))
 opcionColor2['menu'].invoke(claves[8])
 
@@ -202,8 +232,8 @@ opcionColor2['menu'].invoke(claves[8])
 #Posicionamiento en pantalla de los elementos
 titleedit.place(x=0, y=0, width=900, height=50)
 labelfuente.place(x=14, y=60)
-#labeltitulosgrafica.place(x=20, y=145)
-framenamearchivo.place(x=230, y=58, width=660, height=465)
+
+framenamearchivo.place(x=230, y=58, width=660, height=440)
 labelarchivonombre.pack()
 framegrafica.pack()
 
@@ -217,12 +247,24 @@ labeltamanoNumeros.place(x=14, y=270)
 opcionTamanoNumeros.place(x=14, y=300)
 labeltipoDiagrama.place(x=14, y=340)
 opcionTipoDiagrama.place(x=14, y=370)
+labelcambiarTitulos.place(x=275, y=500)
+labelcambiarTitulosy.place(x=420, y=500)
+cajaY.insert(0,"Frecuencia")
+cajaY.place(x=480, y=500)
+labelcambiarTitulosx.place(x=580,y=500)
+cajaX.insert(0, "Angle (y)")
+cajaX.place(x=640, y=500)
+cajaX2.insert(0, "Angle (y)")
+cajaX2.place(x=750, y=500)
+            
+#labelcambiarTitulosx.place(x=420, y=520)
 labelbarraCalor.place(x=14, y=410)
+
 opcionColor.place(x=14,y=440)
-opcionColor2.place(x=90,y=440)
-buttonguardaredit.place(x=68, y = 477, width=80, height=30)
+opcionColor2.place(x=100,y=440)
+buttonguardaredit.place(x=440, y = 560, width=80, height=30)
     
 piepagina = tk.Label(venteditgrafica, background="#F5841F")
-piepagina.place(x=0, y = 530, width=900, height=20)
+piepagina.place(x=0, y = 600, width=900, height=20)
     
 venteditgrafica.mainloop()
