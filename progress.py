@@ -452,7 +452,7 @@ def gnu_plot_TETMvsAng(nombre,ran_fre,fi_ff,parametrosGrafica):   # funcion para
     archivo.write("titizq='TE' # titulo de la figura izquierda"+"\n")##
     archivo.write("titder='TM' # titulo de la figura derecha"+"\n")##
     archivo.write("fuente='"+parametrosGrafica[0]+", "+parametrosGrafica[1]+"'\n") # titulo, tipo y tamaño de la fuente
-    archivo.write("ejexlabel='{Angle X}' # label del eje x"+"\n")##
+    archivo.write("ejexlabel='{"+parametrosGrafica[8]+"}'"" # label del eje x"+"\n")##
     if ran_fre=="1":
        archivo.write("ejeylabel='"+parametrosGrafica[7]+ " (GHz)'"+"\n") # label del eje y"+"\n")##
     elif ran_fre=="2":
@@ -674,23 +674,22 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
     labelcambiarTitulos = tk.Label(venteditgrafica, text="Cambiar titulos:", font="Calibri 15 bold", foreground="#08469B", background="white")
     labelcambiarTitulosx = tk.Label(venteditgrafica, text="eje X:", font="Calibri 15 bold", foreground="#08469B", background="white")
     cajaX = tkinter.Entry(venteditgrafica, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2,relief="flat", bd=1,width=10)
-    cajaX.bind("<KeyRelease>", lambda event: validarentry2(event,"etiqueta",cajaX,angle1))
+    cajaX.bind("<KeyRelease>", lambda event: validarentry2(event,"etiqueta",cajaX,angle1,angle2))
     labelcambiarTitulosy = tk.Label(venteditgrafica, text="eje Y:", font="Calibri 15 bold", foreground="#08469B", background="white")
     cajaY = tkinter.Entry(venteditgrafica, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2,relief="flat", bd=1,width=10)
-    cajaX2 = tkinter.Entry(venteditgrafica, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2,relief="flat", bd=1,width=10)  
-    cajaX2.bind("<KeyRelease>", lambda event: validarentry2(event,"etiqueta",cajaX2,angle2))
+    cajaY.bind("<KeyRelease>", lambda event: validarentry2(event,"canvas",cajaY))
+    #cajaX2 = tkinter.Entry(venteditgrafica, font="Calibri 12",highlightbackground="#a2c4c9", highlightcolor="#a2c4c9", highlightthickness=2,relief="flat", bd=1,width=10)  
+    #cajaX2.bind("<KeyRelease>", lambda event: validarentry2(event,"etiqueta",cajaX2,angle2))
     idtext = ""
-    def validarentry2(event,elemento,caja,etiquetaopcional=None):
+    def validarentry2(event,elemento,caja,etiquetaopcional=None,etiquetaopcional2=None):
         prueba = caja.get()
-        
-        print(parametrosGrafica)
         if elemento == "canvas":  
             titulofrecuencia.delete('all')
             global idtext
             if prueba == "":
                 titulofrecuencia.delete('all')
                 idtext =titulofrecuencia.create_text(18, 253, text = str("Frecuencia" + esc), angle = 90, anchor = "w",font=(clicked[1].get(),tamanoSub))
-                caja.insert(0, "Frecuencia")
+                #caja.insert(0, "Frecuencia")
                 parametrosGrafica[7] = "Frecuencia"
             else:
                 idtext =titulofrecuencia.create_text(18, 253, text = str(prueba+esc), angle = 90, anchor = "w",font=(clicked[1].get(),tamanoSub))
@@ -698,10 +697,15 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
         if elemento == "etiqueta":
             if prueba == "":
                 etiquetaopcional["text"] = "Angle (y)"
-                caja.insert(0, "Angle (y)")
+                etiquetaopcional2["text"] = "Angle (y)"
+                parametrosGrafica[8] = "Angle (y)"
+                #caja.insert(0, "Angle (y)")
 
             else:
                 etiquetaopcional["text"] = prueba
+                etiquetaopcional2["text"] = prueba
+                parametrosGrafica[8] = prueba
+        print(parametrosGrafica)
 
 
 
@@ -725,7 +729,7 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
     modostitulo.grid(row=0, column=1)
     titulofrecuencia = tkinter.Canvas(framegrafica, width = 30, height = 252,background="white",highlightbackground="white")
     idtext = titulofrecuencia.create_text(18, 253, text = "Frecuencia"+esc, angle = 90, anchor = "w",font=("Times New Roman",22))
-    cajaY.bind("<KeyRelease>", lambda event: validarentry2(event,"canvas",cajaY))
+    
     titulofrecuencia.grid(row=1, column=0)
     barracolores= tk.LabelFrame(framegrafica,background="white",relief="flat",highlightbackground="black",highlightcolor="black", highlightthickness=1,bd=1,width= 10, height = 250)
                                                         
@@ -774,6 +778,10 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
     angle2 = Label(modostitulo2,text="Angle (y)",anchor=tk.CENTER,background="white")
     angle2.config(font=("Arial",22))
     angle2.grid(row=0,column=3)
+    colorframe1 = tk.LabelFrame(framegrafica, background="black",highlightbackground="black", highlightcolor="black", highlightthickness=1,relief="flat")
+    colorframe1.place(x=160,y=53,width=110,height=246)
+    colorframe2 = tk.LabelFrame(framegrafica, background="red",highlightbackground="white", highlightcolor="white", highlightthickness=2,relief="flat")
+    colorframe2.place(x=271,y=53,width=110,height=246)
 
     labelarchivonombre = tk.Label(framenamearchivo, text=nombre+".plt", font="Arial 18 bold", foreground="#08469B", background="white")
     tipo = ["Arial","Calibri","Times New Roman"]
@@ -790,7 +798,7 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
     clicked=[]
     clicked=[StringVar(),StringVar(),StringVar(),StringVar(),StringVar(),StringVar(),StringVar()]
     
-    parametrosGrafica = ['Arial','20','18','18','4','white','gray','Frecuencia'] 
+    parametrosGrafica = ['Arial','20','18','18','3','white','gray','Frecuencia',"Angle (y)"] 
     claves = list(colores.keys())
     valores = list(colores.values())
     
@@ -845,11 +853,16 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
             print("Validando tipo de diagrama ..." + clicked[4].get())
             if clicked[4].get() == "Trasmitancia":
                 tipoDiagrama = "4"
-                parametrosGrafica[4] = tipoDiagrama 
+                parametrosGrafica[4] = tipoDiagrama
+                indice=claves.index(clicked[5].get())
+                colorframe2.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+                
             
             if clicked[4].get() == "Reflectancia":
                 tipoDiagrama = "3"
-                parametrosGrafica[4] = tipoDiagrama 
+                parametrosGrafica[4] = tipoDiagrama
+                indice=claves.index(clicked[6].get())
+                colorframe2.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])  
             print(parametrosGrafica)
         if seccion == "colores":
             global colorSelected
@@ -861,6 +874,8 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
             indice=claves.index(clicked[5].get())
             segmentos2.config(bg=coloresauxiliares[indice][0])
             segmentosaux1.config(bg=coloresauxiliares[indice][1])
+            colorframe1.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+            
 
         if seccion == "colores2":
             global colorSelected2
@@ -873,6 +888,14 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
             #print(valores[indice])
             segmentos4.config(bg=coloresauxiliares[indice][0])
             segmentosaux2.config(bg=coloresauxiliares[indice][1])
+            if clicked[4].get() == "Reflectancia":
+                indice=claves.index(clicked[6].get())
+                colorframe2.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+            if clicked[4].get() == "Trasmitancia":
+                indice=claves.index(clicked[5].get())
+                colorframe2.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+            
+            
             #print(claves.index(clicked[6].get()))
             
             
@@ -890,7 +913,7 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
     opcionTamanoNumeros = tk.OptionMenu(venteditgrafica, clicked[3], *tamf,command=lambda event,seccion="numeros":validartamano(event,seccion))
     opcionTamanoNumeros['menu'].invoke(tamf[5])
     opcionTipoDiagrama = tk.OptionMenu(venteditgrafica, clicked[4], *tipd,command=lambda event,seccion="tipodiagrama":validartamano(event,seccion))
-    opcionTipoDiagrama['menu'].invoke(tipd[0])
+    opcionTipoDiagrama['menu'].invoke(tipd[1])
 
     opcionColor = tk.OptionMenu(venteditgrafica, clicked[5], *colores,command=lambda event,seccion="colores":validartamano(event,seccion))
     opcionColor.config(bg=claves[0],activebackground=opcionColor.cget('bg'),width=7)
@@ -925,8 +948,8 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
     labelcambiarTitulosx.place(x=580,y=500)
     cajaX.insert(0, "Angle (y)")
     cajaX.place(x=640, y=500)
-    cajaX2.insert(0, "Angle (y)")
-    cajaX2.place(x=750, y=500)
+    #cajaX2.insert(0, "Angle (y)")
+    #cajaX2.place(x=750, y=500)
                 
     #labelcambiarTitulosx.place(x=420, y=520)
     labelbarraCalor.place(x=14, y=410)
