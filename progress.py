@@ -426,10 +426,13 @@ def volver(ventana1,ventana2):
 
      
 
-def gnu_plot_TETMvsAng(nombre,ran_fre,fi_ff,parametrosGrafica):   # funcion para la escritura del script de visualizacion en GNUPLOT
+def gnu_plot_TETMvsAng(nombre,ran_fre,fi_ff,parametrosGrafica,venteditgrafica):   # funcion para la escritura del script de visualizacion en GNUPLOT
     print(os.getcwd())
     os.chdir(nombre)
     print(parametrosGrafica)
+    def closeProgram():
+        venteditgrafica.destroy()
+    #venteditgrafica.protocol('WM_DELETE_WINDOW', closeProgram())
     print(ran_fre)
     archivo=open(nombre+".plt","w")
     archivo.write("reset"+"\n")
@@ -512,6 +515,10 @@ def gnu_plot_TETMvsAng(nombre,ran_fre,fi_ff,parametrosGrafica):   # funcion para
     archivo.write("unset multiplot # se debe finalizar el metodo que permite pintar muchas figuras"+"\n")
     os.chdir('..')
     print(os.getcwd())
+    botonsalir = tk.Button(venteditgrafica, text = "Salir", font="Calibri 12 bold", background="#B7C800", cursor="hand2",relief="flat", bd=1,width=10,command = lambda:closeProgram())
+    botonsalir.place(x=750, y = 560)
+    print(messagebox.askquestion(message="la Grafica se ha generado en /Tkinter-app/"+nombre+" ,¿Desea generar otra simulación?", title="Confirmación"))
+
     
 
 
@@ -638,6 +645,7 @@ def ventanaSimulacion(nombre):
         framemensaje.place(x=215, y=183, width=400, height=100)
         
 def ventanaEdicionGrafica(ventanaproceso,nombre):
+    
     esc = ""
     datosgrafica = []
     if parametrosGlobales[1]=="1":
@@ -646,8 +654,15 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
         esc = " (Thz)"
     if parametrosGlobales[1]=="3":
         esc = " (Phz)"
-
+    
+    
     venteditgrafica =  tk.Toplevel(ventana)
+
+    def nothing():
+        return
+
+    venteditgrafica.protocol('WM_DELETE_WINDOW', nothing())
+    
     ventanaproceso.withdraw()
     print(parametrosGlobales[1])
     anchoVentana = 900
@@ -706,6 +721,7 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
                 etiquetaopcional2["text"] = prueba
                 parametrosGrafica[8] = prueba
         print(parametrosGrafica)
+        
 
 
 
@@ -717,7 +733,7 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
     fi_ff = str(parametrosGlobales[2] +","+ parametrosGlobales[3])
     print(fi_ff)
     print(parametrosGlobales)
-    buttonguardaredit= tkinter.Button(venteditgrafica, text = "Guardar", cursor="hand2", width=8, height=1,relief="flat", bd=1, font="Calibri 12 bold", foreground="black", background="#B7C800",command=lambda: gnu_plot_TETMvsAng(nombre,parametrosGlobales[1],fi_ff,parametrosGrafica))
+    buttonguardaredit= tkinter.Button(venteditgrafica, text = "Guardar", cursor="hand2", width=8, height=1,relief="flat", bd=1, font="Calibri 12 bold", foreground="black", background="#B7C800",command=lambda: gnu_plot_TETMvsAng(nombre,parametrosGlobales[1],fi_ff,parametrosGrafica,venteditgrafica))
    
     #gnu_plot_TETMvsAng(parametros[0],parametros[1],fi_ff)
     
@@ -762,9 +778,17 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
     titulosTM.config(font=("Arial",22))
     titulosTM.grid(row=0,column=3)
     
-   
-    etiqueta = Label(framegrafica,image=imagen2, background="white")
-    etiqueta.grid(row=1,column=1)
+    bloquegrafica = tk.LabelFrame(framegrafica,width=300,height = 250, background="white",highlightbackground="black", highlightcolor="black", highlightthickness=2,relief="flat")
+    #etiqueta = Label(framegrafica,image=imagen2, background="white")
+    colorframeaux = tk.LabelFrame(bloquegrafica, background="red",highlightbackground="white", highlightcolor="white", highlightthickness=2,relief="flat",width=110,height=246)
+    colorframeaux2 = tk.LabelFrame(bloquegrafica, background="red",highlightbackground="black", highlightcolor="black", highlightthickness=1,relief="flat",width=110,height=246)
+    colorframe1 = tk.LabelFrame(bloquegrafica, background="black",highlightbackground="black", highlightcolor="black", highlightthickness=1,relief="flat",width=110,height=246)
+    colorframeaux.grid(row=0,column=0)
+    colorframe1.grid(row=0,column=1)
+    colorframe2 = tk.LabelFrame(bloquegrafica, background="red",highlightbackground="white", highlightcolor="white", highlightthickness=2,relief="flat",width=110,height=246)
+    colorframe2.grid(row=0,column=3)
+    colorframeaux2.grid(row=0,column=4)
+    bloquegrafica.grid(row=1,column=1,columnspan=1,rowspan=1)
     escalanumeros2= tk.Label(framegrafica,text="90 75 60 45 30 15 0 15 30 45 60 75 90",background="white")
     escalanumeros2.config(font=("Arial",18))
     escalanumeros2.grid(row=2, column=1)
@@ -778,10 +802,7 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
     angle2 = Label(modostitulo2,text="Angle (y)",anchor=tk.CENTER,background="white")
     angle2.config(font=("Arial",22))
     angle2.grid(row=0,column=3)
-    colorframe1 = tk.LabelFrame(framegrafica, background="black",highlightbackground="black", highlightcolor="black", highlightthickness=1,relief="flat")
-    colorframe1.place(x=160,y=53,width=110,height=246)
-    colorframe2 = tk.LabelFrame(framegrafica, background="red",highlightbackground="white", highlightcolor="white", highlightthickness=2,relief="flat")
-    colorframe2.place(x=271,y=53,width=110,height=246)
+    
 
     labelarchivonombre = tk.Label(framenamearchivo, text=nombre+".plt", font="Arial 18 bold", foreground="#08469B", background="white")
     tipo = ["Arial","Calibri","Times New Roman"]
@@ -856,12 +877,19 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
                 parametrosGrafica[4] = tipoDiagrama
                 indice=claves.index(clicked[5].get())
                 colorframe2.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+                indice2=claves.index(clicked[6].get())
+                colorframeaux.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])
+                colorframeaux2.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])
                 
             
             if clicked[4].get() == "Reflectancia":
                 tipoDiagrama = "3"
                 parametrosGrafica[4] = tipoDiagrama
+                indice2=claves.index(clicked[5].get())
+                colorframeaux2.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])
+                colorframe1.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])  
                 indice=claves.index(clicked[6].get())
+                colorframeaux.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
                 colorframe2.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])  
             print(parametrosGrafica)
         if seccion == "colores":
@@ -874,7 +902,24 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
             indice=claves.index(clicked[5].get())
             segmentos2.config(bg=coloresauxiliares[indice][0])
             segmentosaux1.config(bg=coloresauxiliares[indice][1])
-            colorframe1.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+            if clicked[4].get() == "Trasmitancia":
+                indice=claves.index(clicked[5].get())
+                colorframe1.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])  
+                colorframe2.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+                indice2=claves.index(clicked[6].get())
+                colorframeaux.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])
+                colorframeaux2.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])
+            if clicked[4].get() == "Reflectancia":
+                indice2=claves.index(clicked[5].get())
+                colorframeaux2.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])
+                colorframe1.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])  
+                indice=claves.index(clicked[6].get())
+                colorframeaux.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+                colorframe2.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+                
+                
+
+
             
 
         if seccion == "colores2":
@@ -888,12 +933,20 @@ def ventanaEdicionGrafica(ventanaproceso,nombre):
             #print(valores[indice])
             segmentos4.config(bg=coloresauxiliares[indice][0])
             segmentosaux2.config(bg=coloresauxiliares[indice][1])
-            if clicked[4].get() == "Reflectancia":
-                indice=claves.index(clicked[6].get())
-                colorframe2.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
             if clicked[4].get() == "Trasmitancia":
                 indice=claves.index(clicked[5].get())
                 colorframe2.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+                indice2=claves.index(clicked[6].get())
+                colorframeaux.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])
+                colorframeaux2.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])
+            if clicked[4].get() == "Reflectancia":
+                indice2=claves.index(clicked[5].get())
+                colorframeaux2.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])
+                colorframe1.config(bg=coloresauxiliares[indice2][0],highlightbackground=coloresauxiliares[indice2][0], highlightcolor=coloresauxiliares[indice2][0])  
+                indice=claves.index(clicked[6].get())
+                colorframeaux.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+                colorframe2.config(bg=coloresauxiliares[indice][0],highlightbackground=coloresauxiliares[indice][0], highlightcolor=coloresauxiliares[indice][0])
+                
             
             
             #print(claves.index(clicked[6].get()))
