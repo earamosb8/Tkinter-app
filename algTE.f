@@ -50,17 +50,24 @@
       
       read(9,*)nombre
       read(9,*)ran_fre
-      if (ran_fre.eq.1) then
+      if (ran_fre.eq.3) then
+      read(9,*)fi
+      read(9,*)ff
+      fi=fi*1e15
+      ff=ff*1e15
+      else
+      if (ran_fre.eq.2) then
       read(9,*)fi
       read(9,*)ff
       fi=fi*1e12
       ff=ff*1e12
       else
-      if (ran_fre.eq.2) then
+      if (ran_fre.eq.1) then
       read(9,*)fi
       read(9,*)ff
       fi=fi*1e9
       ff=ff*1e9
+      end if
       end if
       end if
       read(9,*)Nf
@@ -71,7 +78,7 @@
       allocate (Aper(capas))
       allocate (Apar(capas,5))
       allocate (ANp(capas))
-
+      call system('mkdir ' // nombre)
       open(unit=1,file=trim(adjustl(nombre))//'-TE.dat',action="write"
      &,status="unknown")!abre los archivos donde van los datos con el nombre de la estructura
       close (unit=1)
@@ -97,11 +104,15 @@
       if (Aper(cap).eq.3) then
       read(9,*)Apar(cap,1)
       read(9,*)Apar(cap,2)  
-      if (ran_fre.eq.1) then
-      Apar(cap,2)=Apar(cap,2)*1e9*2*Pi
+      if (ran_fre.eq.3) then
+      Apar(cap,2)=Apar(cap,2)*1e15*2*Pi
       else
       if (ran_fre.eq.2) then
-      Apar(cap,2)=Apar(cap,2)*1e12*2*Pi     
+      Apar(cap,2)=Apar(cap,2)*1e12*2*Pi 
+      else
+      if (ran_fre.eq.1) then
+      Apar(cap,2)=Apar(cap,2)*1e9*2*Pi     
+      end if    
       end if
       end if
       end if
@@ -124,7 +135,7 @@
       !read*,
 
 
-      open(unit=3,file='progreso.dat',action="write"
+      open(unit=3,file='progresote.dat',action="write"
      &,status="unknown")!archivo sobre el progreso del calculo
       close (unit=3)
 
@@ -147,9 +158,9 @@
       print*,"75%"
       end if
 
-      open(unit=3,file='progreso.dat',action="write"
+      open(unit=3,file='progresote.dat',action="write"
      &,status="replace")
-      write(3,*)"50"
+      write(3,*)int(nang*100/Na)
       close(unit=3)
       
 
@@ -209,11 +220,15 @@
       
       !print*,w/(2*Pi)/1e12,Ref+Tra
       
-      if (ran_fre.eq.1) then
-      write(1,*)Ang*180/Pi,w/(2*Pi)/1e12,Ref,Tra,Ref+Tra
+      if (ran_fre.eq.3) then
+      write(1,*)Ang*180/Pi,w/(2*Pi)/1e15,Ref,Tra,Ref+Tra
       else
       if (ran_fre.eq.2) then
+      write(1,*)Ang*180/Pi,w/(2*Pi)/1e12,Ref,Tra,Ref+Tra
+      else
+      if (ran_fre.eq.1) then
       write(1,*)Ang*180/Pi,w/(2*Pi)/1e9,Ref,Tra,Ref+Tra
+      end if
       end if
       end if
 
