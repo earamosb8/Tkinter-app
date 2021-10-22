@@ -469,9 +469,9 @@ def gnu_plot_TETMvsAng(nombre,ran_fre,fi_ff,parametrosGrafica,venteditgrafica): 
     if ran_fre=="1":
        archivo.write("ejeylabel='"+parametrosGrafica[7]+ " (GHz)'"+"\n") # label del eje y"+"\n")##
     elif ran_fre=="2":
-       archivo.write("ejeylabel="+parametrosGrafica[7]+ " (THz)"+"\n") # label del eje y"+"\n")##
+       archivo.write("ejeylabel='"+parametrosGrafica[7]+ " (THz)'"+"\n") # label del eje y"+"\n")##
     elif ran_fre=="3":
-       archivo.write("ejeylabel="+parametrosGrafica[7]+ " (PHz)"+"\n") # label del eje y"+"\n")##
+       archivo.write("ejeylabel='"+parametrosGrafica[7]+ " (PHz)'"+"\n") # label del eje y"+"\n")##
     archivo.write("fulabel='"+parametrosGrafica[0]+", "+parametrosGrafica[2]+"'\n") # label tipo y tamaño de la fuente
     archivo.write("fuejes='"+parametrosGrafica[0]+", "+parametrosGrafica[3]+"'\n") # fuente de los ejes y el tamaño
     archivo.write("\n")
@@ -1367,3 +1367,5 @@ button.pack()
 piepagina = tk.Label(ventana, background="#F5841F")
 piepagina.pack(side=tk.BOTTOM, fill= tk.X)
 ventana.mainloop()
+
+
